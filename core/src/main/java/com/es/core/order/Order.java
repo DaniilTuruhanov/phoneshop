@@ -3,20 +3,12 @@ package com.es.core.order;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Order
-{
+public class Order {
     private Long id;
     private List<OrderItem> orderItems;
-    /**
-     *  A sum of order item prices;
-     */
     private BigDecimal subtotal;
     private BigDecimal deliveryPrice;
-    /**
-     * <code>subtotal</code> + <code>deliveryPrice</code>
-     */
     private BigDecimal totalPrice;
-
     private String firstName;
     private String lastName;
     private String deliveryAddress;

@@ -17,9 +17,8 @@ public class JdbcPhoneDao implements PhoneDao {
     private JdbcTemplate jdbcTemplate;
 
     public Optional<Phone> get(final Long key) {
-        List<Phone> phoneList = new ArrayList<>();
-        phoneList = jdbcTemplate.query("select * from (select * from phones phoneTable where phoneTable.id=" + key + ") phoneIdTable left outer join phone2color phone2colorTable on phoneIdTable.id=phone2colorTable.phoneId left outer join colors colorTable on phone2colorTable.colorId=colorTable.id", new PhoneMapper());
-        compareColors(phoneList);
+        List<Phone> phoneList;
+        phoneList = jdbcTemplate.query("select * from (select * from phones phoneTable where phoneTable.id=" + key + ") p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id", new PhoneExtractor());
         return phoneList.stream().findAny();
     }
 
@@ -45,21 +44,8 @@ public class JdbcPhoneDao implements PhoneDao {
 
     public List<Phone> findAll(int offset, int limit) {
         List<Phone> phoneList = new ArrayList<>();
-        phoneList = jdbcTemplate.query("select * from (select * from phones offset " + offset + " limit " + limit + ") p inner join phone2color pc on p.id=pc.phoneId inner join colors c on pc.colorId=c.id", new PhoneMapper());
-        phoneList = compareColors(phoneList);
+        phoneList = jdbcTemplate.query("select * from (select * from phones offset " + offset + " limit " + limit + ") p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id", new PhoneExtractor());
         return phoneList;
     }
 
-    public List<Phone> compareColors(List<Phone> list) {
-        for (int i = 0; i < list.size() - 1; i++) {
-            if (list.get(i).getId().equals(list.get(i + 1).getId())) {
-                Set<Color> newColors = list.get(i).getColors();
-                newColors.addAll(list.get(i + 1).getColors());
-                list.get(i).setColors(newColors);
-                list.remove(i + 1);
-                i--;
-            }
-        }
-        return list;
-    }
 }
