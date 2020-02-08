@@ -1,6 +1,6 @@
-package com.es.core.model.order;
+package com.es.core.order;
 
-import com.es.core.model.phone.Phone;
+import com.es.core.phone.Phone;
 
 public class OrderItem {
     private Long id;
