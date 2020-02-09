@@ -1,7 +1,5 @@
 package com.es.core.cart;
 
-import com.es.core.phone.Phone;
-
 import java.util.Map;
 
 public interface CartService {

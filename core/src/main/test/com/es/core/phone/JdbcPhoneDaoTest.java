@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:/resources/context/testApplicationContext.xml")
+@ContextConfiguration("classpath*:/resources/context/testApplicationContextCore.xml")
 
 public class JdbcPhoneDaoTest {
 
@@ -33,7 +32,7 @@ public class JdbcPhoneDaoTest {
 
     @Before
     public void injectJdbcTemplate() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("resources/context/testApplicationContext.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("resources/context/testApplicationContextCore.xml");
         jdbcTemplate = applicationContext.getBean("jdbcTemplate", JdbcTemplate.class);
     }
 
