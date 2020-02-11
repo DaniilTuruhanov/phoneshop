@@ -15,16 +15,16 @@ public class JdbcPhoneDao implements PhoneDao {
     private JdbcTemplate jdbcTemplate;
 
     public Optional<Phone> get(final Long key) {
-        String sql = "select * from (select * from phones phoneTable where phoneTable.id=?) p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id";
-        List<Phone> phoneList = jdbcTemplate.query(sql, new PhoneExtractor(), key);
+        final String getPhone = "select * from (select * from phones phoneTable where phoneTable.id=?) p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id";
+        List<Phone> phoneList = jdbcTemplate.query(getPhone, new PhoneExtractor(), key);
         return phoneList.stream().findAny();
     }
 
     public void save(final Phone phone) {
-        String updatePhones = "update phones set brand=?,model=?,price=?,displaySizeInches=?,weightGr=?,lengthMm=?,widthMm=?,heightMm=?,announced=?,deviceType=?,os=?,displayResolution=?,pixelDensity=?,displayTechnology=?,backCameraMegapixels=?,frontCameraMegapixels=?,ramGb=?,internalStorageGb=?,batteryCapacityMah=?,talkTimeHours=?,standByTimeHours=?,bluetooth=?,positioning=?,imageUrl=?,description=? where id=?";
-        String deleteFrom2Color = "delete from phone2color where phoneId = ?";
-        String insertIntoPhones = "insert into phones values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        String insertIntoPhone2Color = "insert into phone2color (phoneId, colorId) values (?,?)";
+        final String updatePhones = "update phones set brand=?,model=?,price=?,displaySizeInches=?,weightGr=?,lengthMm=?,widthMm=?,heightMm=?,announced=?,deviceType=?,os=?,displayResolution=?,pixelDensity=?,displayTechnology=?,backCameraMegapixels=?,frontCameraMegapixels=?,ramGb=?,internalStorageGb=?,batteryCapacityMah=?,talkTimeHours=?,standByTimeHours=?,bluetooth=?,positioning=?,imageUrl=?,description=? where id=?";
+        final String deleteFrom2Color = "delete from phone2color where phoneId = ?";
+        final String insertIntoPhones = "insert into phones values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        final String insertIntoPhone2Color = "insert into phone2color (phoneId, colorId) values (?,?)";
         Optional<Phone> optionalPhone = get(phone.getId());
 
         if (optionalPhone.isPresent()) {
@@ -41,8 +41,8 @@ public class JdbcPhoneDao implements PhoneDao {
 
     public List<Phone> findAll(int offset, int limit) {
         List<Phone> phoneList;
-        String sql = "select * from (select * from phones offset " + offset + " limit " + limit + ") p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id";
-        phoneList = jdbcTemplate.query(sql, new PhoneExtractor());
+        final String getPhones = "select * from (select * from phones offset " + offset + " limit " + limit + ") p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id";
+        phoneList = jdbcTemplate.query(getPhones, new PhoneExtractor());
         return phoneList;
     }
 
