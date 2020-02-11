@@ -15,22 +15,19 @@ public class PhoneExtractor implements ResultSetExtractor<List<Phone>> {
     @Override
     public List<Phone> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         List<Phone> phoneList = new ArrayList<>();
-        Long prevId = 0L;
-        Long nextId = 1L;
         while (resultSet.next()) {
-            nextId = resultSet.getLong("phoneId");
-            if (prevId.equals(nextId)) {
-                Phone phone = phoneList.get(phoneList.size() - 1);
+            Phone phone = new Phone();
+            phone.setId(resultSet.getLong("phoneId"));
+            if (phoneList.contains(phone)) {
+                phone = phoneList.get(phoneList.indexOf(phone));
                 Color color = new Color(resultSet.getLong("colorId"), resultSet.getString("code"));
                 Set<Color> colors = phone.getColors();
                 colors.add(color);
                 phone.setColors(colors);
             } else {
-                Phone phone = new Phone();
                 Long colorId = resultSet.getLong("colorId");
                 String colorCode = resultSet.getString("code");
                 phone.setBrand(resultSet.getString("brand"));
-                phone.setId(resultSet.getLong("phoneId"));
                 phone.setModel(resultSet.getString("model"));
                 phone.setPrice(resultSet.getBigDecimal("price"));
                 phone.setDisplaySizeInches(resultSet.getBigDecimal("displaySizeInches"));
@@ -58,7 +55,6 @@ public class PhoneExtractor implements ResultSetExtractor<List<Phone>> {
                 phone.setColors(new HashSet<>(Arrays.asList(new Color(colorId, colorCode))));
                 phoneList.add(phone);
             }
-            prevId = resultSet.getLong("phoneId");
         }
         return phoneList;
     }

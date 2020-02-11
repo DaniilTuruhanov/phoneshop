@@ -13,8 +13,11 @@
         <td>Image</td>
         <td>Brand</td>
         <td>Model</td>
+        <td>Color</td>
+        <td>Display size</td>
         <td>Price</td>
-        <td>Colors</td>
+        <td>Quantity</td>
+        <td>Action</td>
     </tr>
     </thead>
     <c:forEach var="phone" items="${phones}">
@@ -24,10 +27,21 @@
             </td>
             <td>${phone.brand}</td>
             <td>${phone.model}</td>
-            <td>$ ${phone.price}</td>
+
             <td><c:forEach var="color" items="${phone.colors}">
                 <div> ${color.code}</div>
             </c:forEach></td>
+
+            <td> ${phone.displaySizeInches}"</td>
+            <td>$ ${phone.price}</td>
+            <form>
+                <td>
+                    <input name="productQuantity">
+                </td>
+                <td>
+                    <button>Add to</button>
+                </td>
+            </form>
         </tr>
     </c:forEach>
 </table>
