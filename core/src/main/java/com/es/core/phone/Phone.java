@@ -8,8 +8,11 @@ import java.util.Set;
 
 public class Phone {
     private Long id;
+
     private String brand;
+
     private String model;
+
     private BigDecimal price;
 
     private BigDecimal displaySizeInches;

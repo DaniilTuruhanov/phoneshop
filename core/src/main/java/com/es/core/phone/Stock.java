@@ -2,7 +2,9 @@ package com.es.core.phone;
 
 public class Stock {
     private Phone phone;
+
     private Integer stock;
+
     private Integer reserved;
 
     public Phone getPhone() {

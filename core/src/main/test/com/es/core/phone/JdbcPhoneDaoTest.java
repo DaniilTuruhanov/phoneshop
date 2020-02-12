@@ -118,7 +118,7 @@ public class JdbcPhoneDaoTest {
         expectedPhone.setId(1000L);
         expectedPhone.setBrand("Nokia");
         expectedPhone.setModel("5110");
-        expectedPhone.setColors(new HashSet<>(Collections.singletonList(new Color(1001L, "Red"))));
+        expectedPhone.setColors(new HashSet<>(Collections.singletonList(new Color(1001L, "White"))));
 
         phoneDao.save(expectedPhone);
 

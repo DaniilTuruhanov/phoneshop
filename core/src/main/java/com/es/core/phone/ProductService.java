@@ -9,15 +9,13 @@ import java.util.Optional;
 
 @Component
 public class ProductService {
+
     @Autowired
     private PhoneDao phoneDao;
 
-
     public Phone get(final Long key) throws PhoneNotFoundException {
         Optional<Phone> phone = phoneDao.get(key);
-        if (phone.isPresent()) {
-            return phone.get();
-        } else throw new PhoneNotFoundException();
+        return phone.orElseThrow(PhoneNotFoundException::new);
     }
 
     public void save(final Phone phone) {
