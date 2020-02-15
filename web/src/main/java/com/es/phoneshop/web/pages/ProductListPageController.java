@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/productList")
-@PropertySource("classpath:limit-for-phonelist.properties")
+@PropertySource("classpath:application.properties")
 public class ProductListPageController {
 
     @Value("${limit}")
