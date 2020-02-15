@@ -31,7 +31,7 @@ public class PhoneExtractor implements ResultSetExtractor<List<Phone>> {
         return phoneList;
     }
 
-    public void addPhoneToPhoneList(List<Phone> phoneList, Phone phone, ResultSet resultSet) throws SQLException {
+    private void addPhoneToPhoneList(List<Phone> phoneList, Phone phone, ResultSet resultSet) throws SQLException {
         Long colorId = resultSet.getLong("colorId");
         String colorCode = resultSet.getString("code");
         phone.setBrand(resultSet.getString("brand"));
