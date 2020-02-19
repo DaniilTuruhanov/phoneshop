@@ -1,29 +1,34 @@
 package com.es.phoneshop.web.pages;
 
-import com.es.core.phone.ProductService;
+import com.es.core.phone.Phone;
+import com.es.core.phone.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/productList")
-@PropertySource("classpath:application.properties")
 public class ProductListPageController {
 
-    @Value("${limit}")
-    public int limit;
-
     @Autowired
-    private ProductService productService;
+    private PhoneService phoneService;
 
     @GetMapping
-    public String showProductList(Model model) {
-        model.addAttribute("phones", productService.findAll(0, limit));
+    public String showProductList(Model model,
+                                  @RequestParam(required = false, defaultValue = "") String query,
+                                  @RequestParam(required = false, defaultValue = "") String order,
+                                  @RequestParam(required = false, defaultValue = "") String sort,
+                                  @RequestParam(required = false, defaultValue = "0") String page) {
+        page = page.equals("") ? "0" : page;
+        List<Phone> phones = phoneService.findAll(Integer.parseInt(page), query, order, sort);
+        int countPage = phoneService.countPage(query, order, sort);
+        model.addAttribute("countPage", countPage);
+        model.addAttribute("phones", phones);
         return "productList";
     }
 }

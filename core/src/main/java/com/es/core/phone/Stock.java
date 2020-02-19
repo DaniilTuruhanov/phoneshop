@@ -1,5 +1,7 @@
 package com.es.core.phone;
 
+import java.util.Objects;
+
 public class Stock {
     private Phone phone;
 
@@ -29,5 +31,18 @@ public class Stock {
 
     public void setReserved(Integer reserved) {
         this.reserved = reserved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        return Objects.equals(phone, stock.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phone);
     }
 }

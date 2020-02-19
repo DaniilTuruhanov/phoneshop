@@ -17,7 +17,7 @@ public class PhoneExtractor implements ResultSetExtractor<List<Phone>> {
         List<Phone> phoneList = new ArrayList<>();
         while (resultSet.next()) {
             Phone phone = new Phone();
-            phone.setId(resultSet.getLong("phoneId"));
+            phone.setId(resultSet.getLong("id"));
             if (phoneList.contains(phone)) {
                 phone = phoneList.get(phoneList.indexOf(phone));
                 Color color = new Color(resultSet.getLong("colorId"), resultSet.getString("code"));
