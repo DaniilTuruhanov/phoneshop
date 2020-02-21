@@ -10,5 +10,5 @@ public interface PhoneDao {
 
     List<Phone> findAll(int offset, int limit, String query, String order, String sort);
 
-    int countPage(int limit, String query, String order, String sort);
+    int countPage(int limit, String query);
 }

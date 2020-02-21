@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ import static org.junit.Assert.assertFalse;
 
 public class JdbcPhoneDaoTest {
 
-    @Autowired
+    @Resource
     private JdbcPhoneDao phoneDao;
 
     private static JdbcTemplate jdbcTemplate;

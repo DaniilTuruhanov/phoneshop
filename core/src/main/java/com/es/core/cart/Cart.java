@@ -1,6 +1,5 @@
 package com.es.core.cart;
 
-import com.es.core.phone.Stock;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -10,17 +9,19 @@ import java.util.List;
 @Component
 public class Cart {
     private BigDecimal totalCost;
-    private Integer totalQuantity;
-    private List<Stock> phoneStocks;
 
-    public BigDecimal getTotalCost() {
-        return totalCost;
-    }
+    private Integer totalQuantity;
+
+    private List<CartEntity> cartEntityList;
 
     public Cart() {
         totalCost = BigDecimal.valueOf(0);
-        phoneStocks = new ArrayList<>();
+        cartEntityList = new ArrayList<>();
         totalQuantity = 0;
+    }
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
     }
 
     public void setTotalCost(BigDecimal totalCost) {
@@ -35,18 +36,18 @@ public class Cart {
         this.totalQuantity = totalQuantity;
     }
 
-    public List<Stock> getPhoneStocks() {
-        return phoneStocks;
+    public List<CartEntity> getCartEntityList() {
+        return cartEntityList;
     }
 
-    public void setPhoneStocks(List<Stock> phoneStocks) {
-        this.phoneStocks = phoneStocks;
+    public void setPhoneStocks(List<CartEntity> phoneStocks) {
+        this.cartEntityList = phoneStocks;
     }
 
     public void recalculateTotals() {
         totalCost = BigDecimal.valueOf(0);
         totalQuantity = 0;
-        for (Stock stock : phoneStocks) {
+        for (CartEntity stock : cartEntityList) {
             totalQuantity += stock.getReserved();
             totalCost = totalCost.add(stock.getPhone().getPrice().multiply(new BigDecimal(stock.getReserved())));
         }

@@ -13,7 +13,7 @@
 </p>
 <p>
     Found
-    <c:out value="${sessionScope.cart.phoneStocks.size()}"/> phones.
+    <c:out value="${sessionScope.cart.cartEntityList.size()}"/> phones.
 <table border="1px">
     <thead>
     <tr>
@@ -31,22 +31,22 @@
         <td>Stock</td>
     </tr>
     </thead>
-    <c:forEach var="stock" items="${sessionScope.cart.phoneStocks}">
+    <c:forEach var="cartEntity" items="${sessionScope.cart.cartEntityList}">
         <tr>
             <td>
-                <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${stock.phone.imageUrl}">
+                <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${cartEntity.phone.imageUrl}">
             </td>
-            <td>${stock.phone.brand}</td>
-            <td>${stock.phone.model}</td>
+            <td>${cartEntity.phone.brand}</td>
+            <td>${cartEntity.phone.model}</td>
 
-            <td><c:forEach var="color" items="${stock.phone.colors}">
+            <td><c:forEach var="color" items="${cartEntity.phone.colors}">
                 <div> ${color.code}</div>
             </c:forEach></td>
 
-            <td> ${stock.phone.displaySizeInches}"</td>
-            <td>$ ${stock.phone.price}</td>
-            <td>${stock.reserved}</td>
-            <td>${stock.stock}</td>
+            <td> ${cartEntity.phone.displaySizeInches}"</td>
+            <td>$ ${cartEntity.phone.price}</td>
+            <td>${cartEntity.reserved}</td>
+            <td>${cartEntity.phone.stock}</td>
         </tr>
     </c:forEach>
 </table>

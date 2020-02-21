@@ -1,11 +1,10 @@
 package com.es.core.phone;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -14,10 +13,10 @@ import java.util.Set;
 @Component
 public class JdbcPhoneDao implements PhoneDao {
 
-    @Autowired
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
-    private static final String GET_PHONE_QUERY = "select * from (select * from phones where id=?) p inner join phone2color p2с on p.id=p2с.phoneId inner join colors c on p2с.colorId=c.id";
+    private static final String GET_PHONE_QUERY = "select * from (select * from phones inner join stocks s on id=s.phoneId where id=?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
     private static final String UPDATE_PHONES_QUERY = "update phones set brand=?,model=?,price=?,displaySizeInches=?,weightGr=?,lengthMm=?,widthMm=?,heightMm=?,announced=?,deviceType=?,os=?,displayResolution=?,pixelDensity=?,displayTechnology=?,backCameraMegapixels=?,frontCameraMegapixels=?,ramGb=?,internalStorageGb=?,batteryCapacityMah=?,talkTimeHours=?,standByTimeHours=?,bluetooth=?,positioning=?,imageUrl=?,description=? where id=?";
     private static final String DELETE_FROM_PHONE2COLOR_QUERY = "delete from phone2color where phoneId = ? and colorId = ?";
     private static final String INSERT_INTO_PHONES_QUERY = "insert into phones values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -25,17 +24,16 @@ public class JdbcPhoneDao implements PhoneDao {
     private static final String GET_PHONES_QUERY = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
     private static final String GET_COUNT_ROW_QUERY = "select count(*) from phones inner join stocks s on id=s.phoneId where s.stock>0";
     private static final String GET_COLORS_QUERY = "select c.id, c.code from phone2color p2c inner join colors c on c.id=p2c.colorId where phoneId=?";
+    private static final String UPDATE_STOCKS_QUERY = "update stocks set stock=? where phoneId=?";
+    private static final String INSERT_INTO_STOCKS_QUERY = "insert into stocks set values (?,?)";
 
+    @Override
     public Optional<Phone> get(final Long key) {
         List<Phone> phoneList = jdbcTemplate.query(GET_PHONE_QUERY, new PhoneExtractor(), key);
-        for (Phone phone : phoneList) {
-            if (phone.getPrice() == null) {
-                phone.setPrice(BigDecimal.valueOf(1));
-            }
-        }
         return phoneList.stream().findAny();
     }
 
+    @Override
     public void save(final Phone phone) {
         Long id = phone.getId();
         Optional<Phone> optionalPhone = get(id);
@@ -59,54 +57,59 @@ public class JdbcPhoneDao implements PhoneDao {
                 jdbcTemplate.update(DELETE_FROM_PHONE2COLOR_QUERY, id, colorId);
             }
         }
-    }
 
-    public List<Phone> findAll(int offset, int limit, String query, String order, String sort) {
-        if (query.length() > 0) {
-            List<String> queryList = queryParams(query);
-            String findInBrand = likeIn("brand", queryList);
-            String findInDescription = likeIn("description", queryList);
-            String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
-            if (order.length() > 0) {
-                getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id ";
-                return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
-            }
-            return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
-        } else {
-            if (order.length() > 0) {
-                String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
-                return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
-            }
-            return findAll(offset, limit);
-        }
     }
 
     @Override
-    public int countPage(int limit, String query, String order, String sort) {
-        int count;
+    public List<Phone> findAll(int offset, int limit, String query, String order, String sort) {
         if (query.length() > 0) {
-            List<String> queryList = queryParams(query);
-            String findInBrand = likeIn("brand", queryList);
-            String findInDescription = likeIn("description", queryList);
-            String getCountRows = "select count(*) from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription;
-            if (order.length() > 0) {
-                getCountRows = "select count(*) from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " order by " + order + " " + sort;
-                count = jdbcTemplate.queryForObject(getCountRows, Integer.class);
-                return (int) Math.ceil((double) count / limit);
-            }
-            count = jdbcTemplate.queryForObject(getCountRows, Integer.class);
-            return (int) Math.ceil((double) count / limit);
+            return findAllWithQuery(offset, limit, query, order, sort);
         } else {
-            if (order.length() > 0) {
-                String getCountRows = "select count(*) from phones inner join stocks s on id=s.phoneId where s.stock>0 order by " + order + " " + sort;
-                count = jdbcTemplate.queryForObject(getCountRows, Integer.class);
-                return (int) Math.ceil((double) count / limit);
-            }
-            return countPage(limit);
+            return findAllWithoutQuery(offset, limit, order, sort);
         }
     }
 
-    public int countPage(int limit) {
+
+    @Override
+    public int countPage(int limit, String query) {
+        if (query.length() > 0) {
+            return countPageWithQuery(limit, query);
+        } else {
+            return countPageWithoutQuery(limit);
+        }
+    }
+
+    private List<Phone> findAllWithQuery(int offset, int limit, String query, String order, String sort) {
+        List<String> queryList = queryParams(query);
+        String findInBrand = likeIn("brand", queryList);
+        String findInDescription = likeIn("description", queryList);
+        String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
+        if (order.length() > 0) {
+            getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id ";
+            return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
+        }
+        return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
+    }
+
+    private List<Phone> findAllWithoutQuery(int offset, int limit, String order, String sort) {
+        if (order.length() > 0) {
+            String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
+            return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
+        }
+        return findAll(offset, limit);
+    }
+
+    private int countPageWithQuery(int limit, String query) {
+        int count;
+        List<String> queryList = queryParams(query);
+        String findInBrand = likeIn("brand", queryList);
+        String findInDescription = likeIn("description", queryList);
+        String getCountRows = "select count(*) from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription;
+        count = jdbcTemplate.queryForObject(getCountRows, Integer.class);
+        return (int) Math.ceil((double) count / limit);
+    }
+
+    private int countPageWithoutQuery(int limit) {
         int count = jdbcTemplate.queryForObject(GET_COUNT_ROW_QUERY, Integer.class);
         return (int) Math.ceil((double) count / limit);
     }
@@ -129,12 +132,13 @@ public class JdbcPhoneDao implements PhoneDao {
         return likeIn;
     }
 
-
     private void updatePhone(Phone phone) {
         jdbcTemplate.update(UPDATE_PHONES_QUERY, phone.getBrand(), phone.getModel(), phone.getPrice(), phone.getDisplaySizeInches(), phone.getWeightGr(), phone.getLengthMm(), phone.getWidthMm(), phone.getHeightMm(), phone.getAnnounced(), phone.getDeviceType(), phone.getOs(), phone.getDisplayResolution(), phone.getPixelDensity(), phone.getDisplayTechnology(), phone.getBackCameraMegapixels(), phone.getFrontCameraMegapixels(), phone.getRamGb(), phone.getInternalStorageGb(), phone.getBatteryCapacityMah(), phone.getTalkTimeHours(), phone.getStandByTimeHours(), phone.getBluetooth(), phone.getPositioning(), phone.getImageUrl(), phone.getDescription(), phone.getId());
+        jdbcTemplate.update(UPDATE_STOCKS_QUERY, phone.getStock(), phone.getId());
     }
 
     private void addPhone(Phone phone) {
         jdbcTemplate.update(INSERT_INTO_PHONES_QUERY, phone.getId(), phone.getBrand(), phone.getModel(), phone.getPrice(), phone.getDisplaySizeInches(), phone.getWeightGr(), phone.getLengthMm(), phone.getWidthMm(), phone.getHeightMm(), phone.getAnnounced(), phone.getDeviceType(), phone.getOs(), phone.getDisplayResolution(), phone.getPixelDensity(), phone.getDisplayTechnology(), phone.getBackCameraMegapixels(), phone.getFrontCameraMegapixels(), phone.getRamGb(), phone.getInternalStorageGb(), phone.getBatteryCapacityMah(), phone.getTalkTimeHours(), phone.getStandByTimeHours(), phone.getBluetooth(), phone.getPositioning(), phone.getImageUrl(), phone.getDescription());
+        jdbcTemplate.update(INSERT_INTO_STOCKS_QUERY, phone.getId(), phone.getStock());
     }
 }

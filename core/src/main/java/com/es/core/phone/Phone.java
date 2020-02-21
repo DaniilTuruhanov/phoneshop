@@ -61,6 +61,16 @@ public class Phone {
 
     private String description;
 
+    private Integer stock;
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
     public String getBrand() {
         return brand;
     }

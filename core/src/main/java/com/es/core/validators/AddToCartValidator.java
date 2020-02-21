@@ -1,53 +1,60 @@
 package com.es.core.validators;
 
 import com.es.core.cart.AddToCartPhone;
-import com.es.core.cart.StockService;
+import com.es.core.cart.CartEntity;
 import com.es.core.exceptions.PhoneNotFoundException;
 import com.es.core.phone.Phone;
-import com.es.core.phone.Stock;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.es.core.phone.PhoneService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-
+import javax.annotation.Resource;
 import java.util.List;
 
 @Component
-public class AddToCartValidator implements Validator<AddToCartPhone> {
-    @Autowired
-    private StockService stockService;
+public class AddToCartValidator implements Validator {
+
+    @Resource
+    private PhoneService phoneService;
 
     @Override
-    public void validate(AddToCartPhone validateObject, ErrorMap errorMap) {
-        AddToCartPhone addToCartPhone = validateObject;
+    public boolean supports(Class<?> aClass) {
+        return AddToCartPhone.class.equals(aClass);
+    }
+
+    @Override
+    public void validate(Object validateObject, Errors errors) {
+        AddToCartPhone addToCartPhone = (AddToCartPhone) validateObject;
         String quantity = addToCartPhone.getQuantity();
         int intQuantity;
         Long phoneId = addToCartPhone.getPhoneId();
-        Stock stock = new Stock();
+        CartEntity cartEntity = new CartEntity();
         Phone phone = new Phone();
         phone.setId(phoneId);
-        stock.setPhone(phone);
-        List<Stock> phoneStocks = addToCartPhone.getCart().getPhoneStocks();
+        cartEntity.setPhone(phone);
+        List<CartEntity> phoneStocks = addToCartPhone.getCart().getCartEntityList();
 
         try {
             intQuantity = Integer.valueOf(quantity);
         } catch (NumberFormatException e) {
-            errorMap.addError("quantity" + addToCartPhone.getPhoneId(), "Not a number");
+            errors.reject("Not a number");
             return;
         }
-        if (phoneStocks.contains(stock)) {
-            stock = phoneStocks.get(phoneStocks.indexOf(stock));
-            if (stock.getReserved() + intQuantity > stock.getStock()) {
-                errorMap.addError("quantity" + phoneId, "Available stock: " + stock.getStock());
+        if (phoneStocks.contains(cartEntity)) {
+            int index = phoneStocks.indexOf(cartEntity);
+            cartEntity = phoneStocks.get(index);
+            if (cartEntity.getReserved() + intQuantity > cartEntity.getPhone().getStock()) {
+                errors.reject("Available stock: " + cartEntity.getPhone().getStock());
             }
         } else {
             try {
-                stock = stockService.get(phoneId);
-                if (intQuantity > stock.getStock()) {
-                    errorMap.addError("quantity" + phoneId, "Available stock: " + stock.getStock());
+                phone = phoneService.get(phoneId);
+                if (intQuantity > phone.getStock()) {
+                    errors.reject("Available stock: " + phone.getStock());
                 }
             } catch (PhoneNotFoundException e) {
-                e.printStackTrace();
+                errors.reject("Phone not found");
             }
         }
     }

@@ -1,11 +1,11 @@
-package com.es.core.phone;
+package com.es.core.cart;
+
+import com.es.core.phone.Phone;
 
 import java.util.Objects;
 
-public class Stock {
+public class CartEntity {
     private Phone phone;
-
-    private Integer stock;
 
     private Integer reserved;
 
@@ -15,14 +15,6 @@ public class Stock {
 
     public void setPhone(Phone phone) {
         this.phone = phone;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
     }
 
     public Integer getReserved() {
@@ -37,8 +29,8 @@ public class Stock {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Stock stock = (Stock) o;
-        return Objects.equals(phone, stock.phone);
+        CartEntity cartEntity = (CartEntity) o;
+        return Objects.equals(phone, cartEntity.phone);
     }
 
     @Override

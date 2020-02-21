@@ -94,7 +94,7 @@
             <td>$ ${phone.price}</td>
             <td>
                 <input id="quantity${phone.id}" name="quantity${phone.id}" value="1">
-                <div class="quantity${phone.id}">
+                <div name="error${phone.id}" class="error">
                 </div>
             </td>
             <td>
@@ -141,24 +141,23 @@
                 type: "POST",
                 url: "${pageContext.servletContext.contextPath}/ajaxCart",
                 data: {quantity: $(quantity).val(), phoneId: id},
-                success: function (msg){
-                var err = JSON.parse(msg);
-                    if (err.valid === true) {
-                        var tbody = document.getElementsByName('cartButton')[0];
-                        tbody.innerHTML = '';
-                        var node = document.createElement('button');
-                        node.innerHTML = 'Cart ' + err.message;
-                        tbody.appendChild(node);
-                        var cleanerror = document.getElementsByClassName('quantity'+id)[0];
-                        cleanerror.innerHTML = '';
-                    }
-                    else {
-                        var tbody = document.getElementsByClassName('quantity'+id)[0];
-                        tbody.innerHTML = '';
-                        var node = document.createElement('span');
-                        node.innerHTML = err.message;
-                        tbody.appendChild(node);
-                    }
+                success: function (msg, textStatus, xhr) {
+                    var tbody = document.getElementsByName('cartButton')[0];
+                    tbody.innerHTML = '';
+                    var node = document.createElement('button');
+                    node.innerHTML = 'Cart ' + xhr.responseText;
+                    tbody.appendChild(node);
+                    Array.from(document.getElementsByClassName('error')).forEach(function(element){
+                        element.innerHTML='';
+                    });
+                    document.getElementsByName('quantity'+id)[0].value='1';
+                },
+                error: function (msg) {
+                    var tbody = document.getElementsByName('error' + id)[0];
+                    tbody.innerHTML = '';
+                    var node = document.createElement('span');
+                    node.innerHTML = msg.responseText;
+                    tbody.appendChild(node);
                 }
             });
         })

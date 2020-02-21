@@ -59,6 +59,7 @@ public class PhoneExtractor implements ResultSetExtractor<List<Phone>> {
         phone.setPositioning(resultSet.getString("positioning"));
         phone.setImageUrl(resultSet.getString("imageUrl"));
         phone.setDescription(resultSet.getString("description"));
+        phone.setStock(resultSet.getInt("stock"));
         phone.setColors(new HashSet<>(Arrays.asList(new Color(colorId, colorCode))));
         phoneList.add(phone);
     }
