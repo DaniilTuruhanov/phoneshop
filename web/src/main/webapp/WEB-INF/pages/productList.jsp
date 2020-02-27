@@ -35,14 +35,14 @@
                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
         </li>
         <li class="page-item "><a class="page-link"
-                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page}">${param.page>1? param.page+1:2}</a>
+                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
         </li>
         <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page<countPage-1?param.page+1:param.page}">${param.page>1? param.page+2:3}</a>
+                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
         </li>
         <li class="page-item">
             <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page<countPage-1?param.page+1:param.page}"
+               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
                aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>
@@ -118,14 +118,14 @@
                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
         </li>
         <li class="page-item "><a class="page-link"
-                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page}">${param.page>1? param.page+1:2}</a>
+                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
         </li>
         <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page<countPage-1?param.page+1:param.page}">${param.page>1? param.page+2:3}</a>
+                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
         </li>
         <li class="page-item">
             <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page<countPage-1?param.page+1:param.page}"
+               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
                aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>
@@ -147,10 +147,10 @@
                     var node = document.createElement('button');
                     node.innerHTML = 'Cart ' + xhr.responseText;
                     tbody.appendChild(node);
-                    Array.from(document.getElementsByClassName('error')).forEach(function(element){
-                        element.innerHTML='';
+                    Array.from(document.getElementsByClassName('error')).forEach(function (element) {
+                        element.innerHTML = '';
                     });
-                    document.getElementsByName('quantity'+id)[0].value='1';
+                    document.getElementsByName('quantity' + id)[0].value = '1';
                 },
                 error: function (msg) {
                     var tbody = document.getElementsByName('error' + id)[0];
