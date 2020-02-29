@@ -16,6 +16,7 @@ public class FromFindAndSortFormToModelConverter implements Converter<FindAndSor
 
     @Override
     public FindAndSortModel convert(FindAndSortForm findAndSortForm) {
+        findAndSortForm.setPage(findAndSortForm.getPage().equals("") ? "0" : findAndSortForm.getPage());
         FindAndSortModel findAndSortModel = new FindAndSortModel();
         populatorFromFindAndSortFormToModel.populate(findAndSortForm, findAndSortModel);
         return findAndSortModel;

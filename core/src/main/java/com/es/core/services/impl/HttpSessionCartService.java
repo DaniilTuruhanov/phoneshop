@@ -35,7 +35,7 @@ public class HttpSessionCartService implements CartService {
         Long phoneId = Long.valueOf(addToCartModel.getPhoneId());
         int quantity = Integer.parseInt(addToCartModel.getQuantity());
         Phone phone = phoneService.get(phoneId);
-        CartEntity cartEntity= new CartEntity();
+        CartEntity cartEntity = new CartEntity();
         cartEntity.setPhone(phone);
         cartEntity.setQuantity(quantity);
         List<CartEntity> cartEntityList = cart.getCartEntityList();
@@ -67,7 +67,7 @@ public class HttpSessionCartService implements CartService {
         cart.setTotalCost(BigDecimal.valueOf(0));
         cart.setTotalQuantity(0);
         for (CartEntity stock : cart.getCartEntityList()) {
-            cart.setTotalQuantity(cart.getTotalQuantity()+stock.getQuantity());
+            cart.setTotalQuantity(cart.getTotalQuantity() + stock.getQuantity());
             BigDecimal multiply = stock.getPhone().getPrice().multiply(new BigDecimal(stock.getQuantity()));
             cart.setTotalCost(cart.getTotalCost().add(multiply));
         }

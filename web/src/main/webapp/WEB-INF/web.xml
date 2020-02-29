@@ -9,7 +9,7 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
-        <listener-class>AddCartHttpSessionListener</listener-class>
+        <listener-class>com.es.core.listeners.AddCartHttpSessionListener</listener-class>
     </listener>
 
     <servlet>

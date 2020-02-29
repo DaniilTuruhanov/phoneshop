@@ -97,7 +97,7 @@ public class JdbcPhoneDao implements PhoneDao {
         String findInDescription = likeIn("description", queryList);
         String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
         if (order.length() > 0) {
-            getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id ";
+            getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 and " + findInBrand + " or " + findInDescription + " order by " + order + " " + sort + ", id offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id ";
             return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
         }
         return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
@@ -105,7 +105,7 @@ public class JdbcPhoneDao implements PhoneDao {
 
     private List<Phone> findAllWithoutQuery(int offset, int limit, String order, String sort) {
         if (order.length() > 0) {
-            String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 order by " + order + " " + sort + " offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
+            String getPhonesWithQuery = "select * from (select * from phones inner join stocks s on id=s.phoneId where s.stock>0 order by " + order + " " + sort + ", id offset ? limit ?) p left outer join phone2color p2с on p.id=p2с.phoneId left outer join colors c on p2с.colorId=c.id";
             return jdbcTemplate.query(getPhonesWithQuery, new PhoneExtractor(), offset, limit);
         }
         return findAll(offset, limit);

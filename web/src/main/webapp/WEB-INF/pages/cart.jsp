@@ -11,6 +11,7 @@
 <p>
     Welcome to Expert-Soft!
 </p>
+<c:if test="${not empty sessionScope.cart.cartEntityList}">
 <p>
     Found
     <c:out value="${sessionScope.cart.cartEntityList.size()}"/> phones.
@@ -45,9 +46,13 @@
 
             <td> ${cartEntity.phone.displaySizeInches}"</td>
             <td>$ ${cartEntity.phone.price}</td>
-            <td>${cartEntity.reserved}</td>
+            <td>${cartEntity.quantity}</td>
             <td>${cartEntity.phone.stock}</td>
         </tr>
     </c:forEach>
 </table>
 </p>
+</c:if>
+<c:if test="${empty sessionScope.cart.cartEntityList}">
+    <h1>YOUR CART IS EMPTY</h1>
+</c:if>

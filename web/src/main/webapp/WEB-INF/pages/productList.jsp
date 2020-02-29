@@ -98,7 +98,7 @@
                 </div>
             </td>
             <td>
-                <input type="submit" class="ajaxButton" onclick="addAjax(${phone.id})" value="Add to">
+                <input type="submit" class="ajaxButton${phone.id}" onclick="addAjax(${phone.id})" value="Add to">
             </td>
         </tr>
 
@@ -137,11 +137,13 @@
     function addAjax(id) {
         var quantity = '#quantity' + id;
         $(document).ready(function () {
+            $('.ajaxButton' + id).prop('disabled', true);
             $.ajax({
                 type: "POST",
                 url: "${pageContext.servletContext.contextPath}/ajaxCart",
                 data: {quantity: $(quantity).val(), phoneId: id},
                 success: function (msg, textStatus, xhr) {
+                    $('.ajaxButton' + id).prop('disabled', false);
                     var tbody = document.getElementsByName('cartButton')[0];
                     tbody.innerHTML = '';
                     var node = document.createElement('button');
@@ -153,6 +155,7 @@
                     document.getElementsByName('quantity' + id)[0].value = '1';
                 },
                 error: function (msg) {
+                    $('.ajaxButton' + id).prop('disabled', false);
                     var tbody = document.getElementsByName('error' + id)[0];
                     tbody.innerHTML = '';
                     var node = document.createElement('span');
