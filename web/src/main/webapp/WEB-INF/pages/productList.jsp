@@ -8,18 +8,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <head>
 </head>
-<p>
+<h4>
+    <span class="badge badge-light">
     Welcome to Expert-Soft!
+    </span>
+</h4>
 <form name="cartButton" action="${pageContext.servletContext.contextPath}/cart">
-    <button>Cart ${sessionScope.cart.totalCost}</button>
+    <button class="btn btn-primary mb-2">Cart ${sessionScope.cart.totalCost} $</button>
 </form>
-</p>
-<p>
+<h4>
+   <span class="badge badge-light">
     Hello from product list!
-</p>
-<form action="productList?query=${param.query}&sort=&order=&page=0">
-    <input name="query" value="${param.query}">
-    <button>Search</button>
+    </span>
+</h4>
+<form class="form-inline" action="productList?query=${param.query}&sort=&order=&page=0">
+    <div class="form-group mx-sm-3 mb-2">
+        <input class="form-control" name="query" value="${param.query}">
+    </div>
+    <button class="btn btn-primary mb-2">Search</button>
 </form>
 <nav aria-label="Page navigation example">
     <ul class="pagination">
@@ -51,54 +57,60 @@
     </ul>
 </nav>
 <p>
+<h4>
+     <span class="badge badge-light">
     Found
     <c:out value="${phones.size()}"/> phones.
-<table border="1px">
+    </span>
+</h4>
+<table class="table table-striped table-hover table-sm">
     <thead>
     <tr>
-        <td>Image</td>
-        <td>Brand
+        <th>Image</th>
+        <th>Brand
             <a href="productList?query=${param.query}&sort=asc&order=brand">↑</a>
             <a href="productList?query=${param.query}&sort=desc&order=brand">↓</a>
-        </td>
-        <td>Model
+        </th>
+        <th>Model
             <a href="productList?query=${param.query}&sort=asc&order=model">↑</a>
             <a href="productList?query=${param.query}&sort=desc&order=model">↓</a>
-        </td>
-        <td>Color</td>
-        <td>Display size
+        </th>
+        <th>Color</th>
+        <th>Display size
             <a href="productList?query=${param.query}&sort=asc&order=displaySizeInches">↑</a>
             <a href="productList?query=${param.query}&sort=desc&order=displaySizeInches">↓</a>
-        </td>
-        <td>Price
+        </th>
+        <th>Price
             <a href="productList?query=${param.query}&sort=asc&order=price">↑</a>
             <a href="productList?query=${param.query}&sort=desc&order=price">↓</a>
-        </td>
-        <td>Quantity</td>
-        <td>Action</td>
+        </th>
+        <th>Quantity</th>
+        <th>Action</th>
     </tr>
     </thead>
     <c:forEach var="phone" items="${phones}">
         <tr>
-            <td>
+            <th>
                 <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
-            </td>
-            <td>${phone.brand}</td>
-            <td>${phone.model}</td>
+            </th>
+            <th>${phone.brand}</th>
+            <th>${phone.model}</th>
 
-            <td><c:forEach var="color" items="${phone.colors}">
+            <th><c:forEach var="color" items="${phone.colors}">
                 <div> ${color.code}</div>
-            </c:forEach></td>
+            </c:forEach></th>
 
-            <td> ${phone.displaySizeInches}"</td>
-            <td>$ ${phone.price}</td>
-            <td>
-                <input id="quantity${phone.id}" name="quantity${phone.id}" value="1">
-                <div name="error${phone.id}" class="error">
+            <th> ${phone.displaySizeInches}"</th>
+            <th>$ ${phone.price}</th>
+            <th>
+                <div>
+                    <input class="form-control" id="quantity${phone.id}" name="quantity${phone.id}" value="1">
                 </div>
-            </td>
+                <div name="error${phone.id}" class="error"></div>
+            </th>
             <td>
-                <input type="submit" class="ajaxButton${phone.id}" onclick="addAjax(${phone.id})" value="Add to">
+                <input class="btn btn-primary mb-2" type="submit" id="ajaxButton${phone.id}"
+                       onclick="addAjax(${phone.id})" value="Add to">
             </td>
         </tr>
 
@@ -137,17 +149,18 @@
     function addAjax(id) {
         var quantity = '#quantity' + id;
         $(document).ready(function () {
-            $('.ajaxButton' + id).prop('disabled', true);
+            $('#ajaxButton' + id).prop('disabled', true);
             $.ajax({
                 type: "POST",
                 url: "${pageContext.servletContext.contextPath}/ajaxCart",
                 data: {quantity: $(quantity).val(), phoneId: id},
                 success: function (msg, textStatus, xhr) {
-                    $('.ajaxButton' + id).prop('disabled', false);
+                    $('#ajaxButton' + id).prop('disabled', false);
                     var tbody = document.getElementsByName('cartButton')[0];
                     tbody.innerHTML = '';
                     var node = document.createElement('button');
-                    node.innerHTML = 'Cart ' + xhr.responseText;
+                    node.className = "btn btn-primary mb-2";
+                    node.innerHTML = 'Cart ' + xhr.responseText + ' $';
                     tbody.appendChild(node);
                     Array.from(document.getElementsByClassName('error')).forEach(function (element) {
                         element.innerHTML = '';
@@ -155,11 +168,12 @@
                     document.getElementsByName('quantity' + id)[0].value = '1';
                 },
                 error: function (msg) {
-                    $('.ajaxButton' + id).prop('disabled', false);
+                    $('#ajaxButton' + id).prop('disabled', false);
                     var tbody = document.getElementsByName('error' + id)[0];
                     tbody.innerHTML = '';
                     var node = document.createElement('span');
                     node.innerHTML = msg.responseText;
+                    node.style.color = "red";
                     tbody.appendChild(node);
                 }
             });

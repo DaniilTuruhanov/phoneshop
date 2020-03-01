@@ -46,7 +46,7 @@ public class AddToCartValidator implements Validator {
             return;
         }
 
-        if (intQuantity < 0) {
+        if (intQuantity <= 0) {
             errors.reject("Use number more then 0");
             return;
         }
