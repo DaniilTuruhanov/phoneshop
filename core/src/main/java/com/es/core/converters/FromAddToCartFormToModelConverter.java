@@ -2,22 +2,29 @@ package com.es.core.converters;
 
 import com.es.core.forms.AddToCartForm;
 import com.es.core.models.AddToCartModel;
-import com.es.core.populators.impl.FromAddToCartFormToModelPopulator;
+import com.es.core.populators.interfaces.Populator;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.List;
 
-@Component
 public class FromAddToCartFormToModelConverter implements Converter<AddToCartForm, AddToCartModel> {
 
-    @Resource
-    private FromAddToCartFormToModelPopulator fromAddToCartFormToModelPopulator;
+    private List<Populator> populatorList;
 
     @Override
     public AddToCartModel convert(AddToCartForm addToCartForm) {
         AddToCartModel addToCartModel = new AddToCartModel();
-        fromAddToCartFormToModelPopulator.populate(addToCartForm, addToCartModel);
+        for (Populator populator : populatorList) {
+            populator.populate(addToCartForm, addToCartModel);
+        }
         return addToCartModel;
+    }
+
+    public List<Populator> getPopulatorList() {
+        return populatorList;
+    }
+
+    public void setPopulatorList(List<Populator> populatorList) {
+        this.populatorList = populatorList;
     }
 }

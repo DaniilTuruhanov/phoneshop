@@ -22,6 +22,37 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="fromFindAndSortFormToModelPopulator"
+          class="com.es.core.populators.impl.FromFindAndSortFormToModelPopulator"/>
+
+    <bean id="fromAddToCartFormToModelPopulator" class="com.es.core.populators.impl.FromAddToCartFormToModelPopulator"/>
+
+    <bean id="fromPhoneToDataPopulator" class="com.es.core.populators.impl.FromPhoneToDataPopulator"/>
+
+    <bean id="fromAddToCartFormToModelConverter" class="com.es.core.converters.FromAddToCartFormToModelConverter">
+        <property name="populatorList">
+            <list>
+                <ref bean="fromAddToCartFormToModelPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromPhoneToDataConverter" class="com.es.core.converters.FromPhoneToDataConverter">
+        <property name="populatorList">
+            <list>
+                <ref bean="fromPhoneToDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromFindAndSortFormToModelConverter" class="com.es.core.converters.FromFindAndSortFormToModelConverter">
+        <property name="populatorList">
+            <list>
+                <ref bean="fromFindAndSortFormToModelPopulator"/>
+            </list>
+        </property>
+    </bean>
+
     <jdbc:initialize-database enabled="${db.insertSchema}" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
     </jdbc:initialize-database>

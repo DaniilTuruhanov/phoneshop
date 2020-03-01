@@ -3,9 +3,7 @@ package com.es.core.populators.impl;
 import com.es.core.data.PlpData;
 import com.es.core.models.Phone;
 import com.es.core.populators.interfaces.Populator;
-import org.springframework.stereotype.Component;
 
-@Component
 public class FromPhoneToDataPopulator implements Populator<Phone, PlpData> {
 
     @Override

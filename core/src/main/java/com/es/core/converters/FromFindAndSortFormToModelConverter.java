@@ -2,23 +2,30 @@ package com.es.core.converters;
 
 import com.es.core.forms.FindAndSortForm;
 import com.es.core.models.FindAndSortModel;
-import com.es.core.populators.impl.FromFindAndSortFormToModelPopulator;
+import com.es.core.populators.interfaces.Populator;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.List;
 
-@Component
 public class FromFindAndSortFormToModelConverter implements Converter<FindAndSortForm, FindAndSortModel> {
 
-    @Resource
-    private FromFindAndSortFormToModelPopulator populatorFromFindAndSortFormToModel;
+    private List<Populator> populatorList;
 
     @Override
     public FindAndSortModel convert(FindAndSortForm findAndSortForm) {
         findAndSortForm.setPage(findAndSortForm.getPage().equals("") ? "0" : findAndSortForm.getPage());
         FindAndSortModel findAndSortModel = new FindAndSortModel();
-        populatorFromFindAndSortFormToModel.populate(findAndSortForm, findAndSortModel);
+        for (Populator populator : populatorList) {
+            populator.populate(findAndSortForm, findAndSortModel);
+        }
         return findAndSortModel;
+    }
+
+    public List<Populator> getPopulatorList() {
+        return populatorList;
+    }
+
+    public void setPopulatorList(List<Populator> populatorList) {
+        this.populatorList = populatorList;
     }
 }
