@@ -22,33 +22,34 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="fromFindAndSortFormToModelPopulator"
-          class="com.es.core.populators.impl.FromFindAndSortFormToModelPopulator"/>
-
-    <bean id="fromAddToCartFormToModelPopulator" class="com.es.core.populators.impl.FromAddToCartFormToModelPopulator"/>
-
-    <bean id="fromPhoneToDataPopulator" class="com.es.core.populators.impl.FromPhoneToDataPopulator"/>
-
-    <bean id="fromAddToCartFormToModelConverter" class="com.es.core.converters.FromAddToCartFormToModelConverter">
-        <property name="populatorList">
+    <bean id="fromAddToCartFormToModelConverter" class="com.es.core.converter.FromAddToCartFormToModelConverter">
+        <property name="populators">
             <list>
                 <ref bean="fromAddToCartFormToModelPopulator"/>
             </list>
         </property>
     </bean>
 
-    <bean id="fromPhoneToDataConverter" class="com.es.core.converters.FromPhoneToDataConverter">
-        <property name="populatorList">
+    <bean id="fromPhoneToDataConverter" class="com.es.core.converter.FromPhoneToDataConverter">
+        <property name="populators">
             <list>
                 <ref bean="fromPhoneToDataPopulator"/>
             </list>
         </property>
     </bean>
 
-    <bean id="fromFindAndSortFormToModelConverter" class="com.es.core.converters.FromFindAndSortFormToModelConverter">
-        <property name="populatorList">
+    <bean id="fromFindAndSortFormToModelConverter" class="com.es.core.converter.FromFindAndSortFormToModelConverter">
+        <property name="populators">
             <list>
                 <ref bean="fromFindAndSortFormToModelPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="cartToCartDataConverter" class="com.es.core.converter.FromCartToCartDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromCartToCartDataPopulator"/>
             </list>
         </property>
     </bean>

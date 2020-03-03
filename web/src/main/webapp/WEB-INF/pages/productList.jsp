@@ -21,130 +21,137 @@
     Hello from product list!
     </span>
 </h4>
-<form class="form-inline" action="productList?query=${param.query}&sort=&order=&page=0">
+<form class="form-inline" action="products?query=${param.query}&sort=&order=&page=0">
     <div class="form-group mx-sm-3 mb-2">
         <input class="form-control" name="query" value="${param.query}">
     </div>
     <button class="btn btn-primary mb-2">Search</button>
 </form>
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:0}"
-               aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
-        </li>
-        <li class="page-item "><a class="page-link"
-                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
-               aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-<p>
-<h4>
+<c:if test="${not empty phones}">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:0}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
+            </li>
+            <li class="page-item "><a class="page-link"
+                                      href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <p>
+    <h4>
      <span class="badge badge-light">
     Found
     <c:out value="${phones.size()}"/> phones.
     </span>
-</h4>
-<table class="table table-striped table-hover table-sm">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Brand
-            <a href="productList?query=${param.query}&sort=asc&order=brand">↑</a>
-            <a href="productList?query=${param.query}&sort=desc&order=brand">↓</a>
-        </th>
-        <th>Model
-            <a href="productList?query=${param.query}&sort=asc&order=model">↑</a>
-            <a href="productList?query=${param.query}&sort=desc&order=model">↓</a>
-        </th>
-        <th>Color</th>
-        <th>Display size
-            <a href="productList?query=${param.query}&sort=asc&order=displaySizeInches">↑</a>
-            <a href="productList?query=${param.query}&sort=desc&order=displaySizeInches">↓</a>
-        </th>
-        <th>Price
-            <a href="productList?query=${param.query}&sort=asc&order=price">↑</a>
-            <a href="productList?query=${param.query}&sort=desc&order=price">↓</a>
-        </th>
-        <th>Quantity</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <c:forEach var="phone" items="${phones}">
+    </h4>
+    <table class="table table-striped table-hover table-sm">
+        <thead>
         <tr>
-            <th>
-                <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
+            <th>Image</th>
+            <th>Brand
+                <a href="products?query=${param.query}&sort=asc&order=brand">↑</a>
+                <a href="products?query=${param.query}&sort=desc&order=brand">↓</a>
             </th>
-            <th>${phone.brand}</th>
-            <th>${phone.model}</th>
-
-            <th><c:forEach var="color" items="${phone.colors}">
-                <div> ${color.code}</div>
-            </c:forEach></th>
-
-            <th> ${phone.displaySizeInches}"</th>
-            <th>$ ${phone.price}</th>
-            <th>
-                <div>
-                    <input class="form-control" id="quantity${phone.id}" name="quantity${phone.id}" value="1">
-                </div>
-                <div name="error${phone.id}" class="error"></div>
+            <th>Model
+                <a href="products?query=${param.query}&sort=asc&order=model">↑</a>
+                <a href="products?query=${param.query}&sort=desc&order=model">↓</a>
             </th>
-            <td>
-                <input class="btn btn-primary mb-2" type="submit" id="ajaxButton${phone.id}"
-                       onclick="addAjax(${phone.id})" value="Add to">
-            </td>
+            <th>Color</th>
+            <th>Display size
+                <a href="products?query=${param.query}&sort=asc&order=displaySizeInches">↑</a>
+                <a href="products?query=${param.query}&sort=desc&order=displaySizeInches">↓</a>
+            </th>
+            <th>Price
+                <a href="products?query=${param.query}&sort=asc&order=price">↑</a>
+                <a href="products?query=${param.query}&sort=desc&order=price">↓</a>
+            </th>
+            <th>Quantity</th>
+            <th>Action</th>
         </tr>
+        </thead>
+        <c:forEach var="phone" items="${phones}">
+            <tr>
+                <th>
+                    <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
+                </th>
+                <th>${phone.brand}</th>
+                <th>${phone.model}</th>
 
-    </c:forEach>
-</table>
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:0}"
-               aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
-        </li>
-        <li class="page-item "><a class="page-link"
-                                  href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link"
-               href="productList?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
-               aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+                <th><c:forEach var="color" items="${phone.colors}">
+                    <div> ${color.code}</div>
+                </c:forEach></th>
+
+                <th> ${phone.displaySizeInches}"</th>
+                <th>$ ${phone.price}</th>
+                <th>
+                    <div>
+                        <input class="form-control" id="quantity${phone.id}" name="quantity${phone.id}" value="1">
+                    </div>
+                    <div name="error${phone.id}" class="error"></div>
+                </th>
+                <td>
+                    <input class="btn btn-primary mb-2" type="submit" id="ajaxButton${phone.id}"
+                           onclick="addAjax(${phone.id})" value="Add to">
+                </td>
+            </tr>
+
+        </c:forEach>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:0}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page-1:param.page}">${param.page>1? param.page:1}</a>
+            </li>
+            <li class="page-item "><a class="page-link"
+                                      href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?param.page:1}">${param.page>1? param.page+1:2}</a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):2}">${param.page>1? param.page+2:3}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="products?query=${param.query}&sort=${param.sort}&order=${param.order}&page=${param.page>0?(param.page<countPage-1?param.page+1:param.page):1}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</c:if>
+<c:if test="${empty phones}">
+    <h1>
+        <span class="badge badge-secondary">Phones not found</span>
+    </h1>
+</c:if>
 <script>
     function addAjax(id) {
         var quantity = '#quantity' + id;
@@ -152,7 +159,7 @@
             $('#ajaxButton' + id).prop('disabled', true);
             $.ajax({
                 type: "POST",
-                url: "${pageContext.servletContext.contextPath}/ajaxCart",
+                url: "${pageContext.servletContext.contextPath}/products/add",
                 data: {quantity: $(quantity).val(), phoneId: id},
                 success: function (msg, textStatus, xhr) {
                     $('#ajaxButton' + id).prop('disabled', false);
