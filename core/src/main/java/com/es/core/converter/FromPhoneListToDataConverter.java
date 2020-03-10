@@ -2,7 +2,7 @@ package com.es.core.converter;
 
 import com.es.core.data.PhonePlpData;
 import com.es.core.model.Phone;
-import com.es.core.populator.inter.Populator;
+import com.es.core.populator.Populator;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;

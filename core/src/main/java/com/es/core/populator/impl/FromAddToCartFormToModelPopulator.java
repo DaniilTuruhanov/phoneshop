@@ -2,7 +2,7 @@ package com.es.core.populator.impl;
 
 import com.es.core.form.AddToCartForm;
 import com.es.core.model.AddToCartModel;
-import com.es.core.populator.inter.Populator;
+import com.es.core.populator.Populator;
 import org.springframework.stereotype.Component;
 
 @Component

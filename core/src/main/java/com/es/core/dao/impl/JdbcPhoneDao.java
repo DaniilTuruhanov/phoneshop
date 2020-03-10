@@ -4,7 +4,7 @@ import com.es.core.model.Color;
 import com.es.core.model.FindAndSortModel;
 import com.es.core.model.Phone;
 import com.es.core.dao.extractor.PhoneExtractor;
-import com.es.core.dao.inter.PhoneDao;
+import com.es.core.dao.PhoneDao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

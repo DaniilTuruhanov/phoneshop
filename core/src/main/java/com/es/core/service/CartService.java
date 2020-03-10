@@ -1,4 +1,4 @@
-package com.es.core.service.inter;
+package com.es.core.service;
 
 import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.AddToCartModel;

@@ -3,7 +3,7 @@ package com.es.core.service.impl;
 import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.FindAndSortModel;
 import com.es.core.model.Phone;
-import com.es.core.dao.inter.PhoneDao;
+import com.es.core.dao.PhoneDao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;

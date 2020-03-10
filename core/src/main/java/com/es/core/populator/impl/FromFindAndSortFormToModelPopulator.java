@@ -2,7 +2,7 @@ package com.es.core.populator.impl;
 
 import com.es.core.form.FindAndSortForm;
 import com.es.core.model.FindAndSortModel;
-import com.es.core.populator.inter.Populator;
+import com.es.core.populator.Populator;
 import org.springframework.stereotype.Component;
 
 @Component

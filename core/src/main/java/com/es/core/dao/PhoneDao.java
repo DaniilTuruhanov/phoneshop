@@ -1,4 +1,4 @@
-package com.es.core.dao.inter;
+package com.es.core.dao;
 
 import com.es.core.model.FindAndSortModel;
 import com.es.core.model.Phone;

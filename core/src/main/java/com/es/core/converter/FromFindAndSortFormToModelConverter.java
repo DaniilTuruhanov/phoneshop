@@ -2,7 +2,7 @@ package com.es.core.converter;
 
 import com.es.core.form.FindAndSortForm;
 import com.es.core.model.FindAndSortModel;
-import com.es.core.populator.inter.Populator;
+import com.es.core.populator.Populator;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
