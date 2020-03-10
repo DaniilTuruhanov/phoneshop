@@ -1,9 +1,7 @@
 package com.es.phoneshop.web.controller;
 
-import com.es.core.facade.CartFacade;
-import com.es.core.facade.GetCartDataFacade;
-import com.es.core.model.Cart;
 import com.es.core.exception.PhoneNotFoundException;
+import com.es.core.facade.CartFacade;
 import com.es.core.form.AddToCartForm;
 import com.es.core.validator.AddToCartValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,9 +25,6 @@ public class AddToCartController {
     private CartFacade cartFacade;
 
     @Resource
-    private GetCartDataFacade getCartDataFacade;
-
-    @Resource
     private AddToCartValidator addToCartValidator;
 
     @PostMapping
@@ -40,7 +35,7 @@ public class AddToCartController {
             return new ResponseEntity<>(errorString, new HttpHeaders(), HttpStatus.BAD_REQUEST);
         } else {
             cartFacade.addToCart(addToCartForm);
-            String message = getCartDataFacade.getCartData().toString();
+            String message = cartFacade.getTotalCost().toString();
             return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
         }
     }

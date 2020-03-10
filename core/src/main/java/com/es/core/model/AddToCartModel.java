@@ -1,26 +1,23 @@
 package com.es.core.model;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class AddToCartModel {
-    private String quantity;
+    private Integer quantity;
 
-    private String phoneId;
+    private Long phoneId;
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public String getPhoneId() {
+    public Long getPhoneId() {
         return phoneId;
     }
 
-    public void setPhoneId(String phoneId) {
+    public void setPhoneId(Long phoneId) {
         this.phoneId = phoneId;
     }
 }

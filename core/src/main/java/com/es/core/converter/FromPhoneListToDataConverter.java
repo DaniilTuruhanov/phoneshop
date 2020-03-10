@@ -1,23 +1,24 @@
 package com.es.core.converter;
 
-import com.es.core.data.PlpData;
+import com.es.core.data.PhonePlpData;
 import com.es.core.model.Phone;
 import com.es.core.populator.inter.Populator;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FromPhoneToDataConverter implements Converter<List<Phone>, PlpData> {
+public class FromPhoneListToDataConverter implements Converter<List<Phone>, List<PhonePlpData>> {
 
     private List<Populator> populators;
 
     @Override
-    public PlpData convert(List<Phone> phone) {
-        PlpData plpData = new PlpData();
+    public List<PhonePlpData> convert(List<Phone> phone) {
+        List<PhonePlpData> phonePlpData = new ArrayList<>();
         for (Populator populator : populators) {
-            populator.populate(phone, plpData);
+            populator.populate(phone, phonePlpData);
         }
-        return plpData;
+        return phonePlpData;
     }
 
     public List<Populator> getPopulators() {

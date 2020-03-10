@@ -1,7 +1,7 @@
 package com.es.phoneshop.web.controller;
 
-import com.es.core.data.PlpData;
-import com.es.core.facade.FindPlpFacade;
+import com.es.core.data.PhonePlpData;
+import com.es.core.facade.PlpFacade;
 import com.es.core.form.FindAndSortForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,14 +17,14 @@ import java.util.List;
 public class ProductListPageController {
 
     @Resource
-    private FindPlpFacade plpFacade;
+    private PlpFacade plpFacade;
 
     @GetMapping
     public String showProductList(Model model, @ModelAttribute FindAndSortForm findAndSortForm) {
-        PlpData phones = plpFacade.findAll(findAndSortForm);
+        List<PhonePlpData> phones = plpFacade.findAll(findAndSortForm);
         int countPage = plpFacade.countPage(findAndSortForm);
         model.addAttribute("countPage", countPage);
-        model.addAttribute("phones", phones.getPhoneList());
+        model.addAttribute("phones", phones);
         return "productList";
     }
 }

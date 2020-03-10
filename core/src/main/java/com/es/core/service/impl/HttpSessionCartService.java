@@ -32,8 +32,8 @@ public class HttpSessionCartService implements CartService {
     @Override
     public void addPhone(AddToCartModel addToCartModel) throws PhoneNotFoundException {
         Cart cart = getCart();
-        Long phoneId = Long.valueOf(addToCartModel.getPhoneId());
-        int quantity = Integer.parseInt(addToCartModel.getQuantity());
+        Long phoneId = addToCartModel.getPhoneId();
+        int quantity = addToCartModel.getQuantity();
         Phone phone = phoneService.get(phoneId);
         CartEntity cartEntity = new CartEntity();
         cartEntity.setPhone(phone);

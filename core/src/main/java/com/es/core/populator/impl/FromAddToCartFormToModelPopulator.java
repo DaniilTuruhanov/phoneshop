@@ -10,7 +10,7 @@ public class FromAddToCartFormToModelPopulator implements Populator<AddToCartFor
 
     @Override
     public void populate(AddToCartForm addToCartForm, AddToCartModel addToCartModel) {
-        addToCartModel.setPhoneId(addToCartForm.getPhoneId());
-        addToCartModel.setQuantity(addToCartForm.getQuantity());
+        addToCartModel.setPhoneId(Long.valueOf(addToCartForm.getPhoneId()));
+        addToCartModel.setQuantity(Integer.valueOf(addToCartForm.getQuantity()));
     }
 }

@@ -30,10 +30,10 @@
         </property>
     </bean>
 
-    <bean id="fromPhoneToDataConverter" class="com.es.core.converter.FromPhoneToDataConverter">
+    <bean id="fromPhoneListToDataConverter" class="com.es.core.converter.FromPhoneListToDataConverter">
         <property name="populators">
             <list>
-                <ref bean="fromPhoneToDataPopulator"/>
+                <ref bean="fromPhoneListToDataPopulator"/>
             </list>
         </property>
     </bean>
@@ -42,14 +42,6 @@
         <property name="populators">
             <list>
                 <ref bean="fromFindAndSortFormToModelPopulator"/>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="cartToCartDataConverter" class="com.es.core.converter.FromCartToCartDataConverter">
-        <property name="populators">
-            <list>
-                <ref bean="fromCartToCartDataPopulator"/>
             </list>
         </property>
     </bean>
