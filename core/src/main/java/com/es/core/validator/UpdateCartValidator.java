@@ -30,14 +30,14 @@ public class UpdateCartValidator implements Validator {
         int intQuantity;
         UpdateCartForm updateCartForm = (UpdateCartForm) validateObject;
 
-        for (int i = 0; i < updateCartForm.getPhonesId().size(); i++) {
-            String stringPhoneId = updateCartForm.getPhonesId().get(i);
+        for (int i = 0; i < updateCartForm.getUpdatePhonesIds().size(); i++) {
+            String stringPhoneId = updateCartForm.getUpdatePhonesIds().get(i);
             try {
                 CartEntity cartEntity = new CartEntity();
                 Long phoneId = Long.valueOf(stringPhoneId);
                 phone.setId(phoneId);
                 cartEntity.setPhone(phone);
-                intQuantity = Integer.parseInt(updateCartForm.getQuantity().get(i));
+                intQuantity = Integer.parseInt(updateCartForm.getUpdatePhonesQuantities().get(i));
                 int index = cartEntityList.indexOf(cartEntity);
                 cartEntity = cartEntityList.get(index);
                 if (intQuantity <= 0) {

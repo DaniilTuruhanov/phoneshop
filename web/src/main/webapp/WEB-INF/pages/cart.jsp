@@ -64,8 +64,8 @@
                     <th> ${cartEntity.displaySizeInches}"</th>
                     <th>$ ${cartEntity.price}</th>
                     <th>
-                        <input class="form-control" name="quantity" value="${cartEntity.quantity}"/>
-                        <input class="form-control" type="hidden" name="phonesId"
+                        <input class="form-control" name="updatePhonesQuantities" value="${cartEntity.quantity}"/>
+                        <input class="form-control" type="hidden" name="updatePhonesIds"
                                value="${cartEntity.id}"/>
                         <c:forEach items="${errors}" var="error">
                             <c:if test="${error.code.equals(cartEntity.id.toString())}">

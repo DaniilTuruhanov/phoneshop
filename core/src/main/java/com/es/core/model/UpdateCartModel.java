@@ -4,30 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateCartModel {
+    private List<Long> updatePhonesIds;
 
-    private List<Long> phonesId;
-
-    private List<Integer> quantity;
+    private List<Integer> updatePhonesQuantities;
 
     public UpdateCartModel() {
-        phonesId = new ArrayList<>();
-        quantity = new ArrayList<>();
+        updatePhonesIds = new ArrayList<>();
+        updatePhonesQuantities = new ArrayList<>();
     }
 
-    public List<Long> getPhonesId() {
-        return phonesId;
+    public List<Long> getUpdatePhonesIds() {
+        return updatePhonesIds;
     }
 
-    public void setPhonesId(List<Long> phonesId) {
-        this.phonesId = phonesId;
+    public void setUpdatePhonesIds(List<Long> updatePhonesIds) {
+        this.updatePhonesIds = updatePhonesIds;
     }
 
-    public List<Integer> getQuantity() {
-        return quantity;
+    public List<Integer> getUpdatePhonesQuantities() {
+        return updatePhonesQuantities;
     }
 
-    public void setQuantity(List<Integer> quantity) {
-        this.quantity = quantity;
+    public void setUpdatePhonesQuantities(List<Integer> updatePhonesQuantities) {
+        this.updatePhonesQuantities = updatePhonesQuantities;
     }
 }
 

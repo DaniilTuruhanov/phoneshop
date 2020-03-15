@@ -55,12 +55,12 @@ public class HttpSessionCartService implements CartService {
     public void update(UpdateCartModel updateCartModel) {
         CartModel cart = getCart();
         Phone phone = new Phone();
-        for (int i = 0; i < updateCartModel.getPhonesId().size(); i++) {
+        for (int i = 0; i < updateCartModel.getUpdatePhonesQuantities().size(); i++) {
             CartEntity cartEntity = new CartEntity();
-            phone.setId(updateCartModel.getPhonesId().get(i));
+            phone.setId(updateCartModel.getUpdatePhonesIds().get(i));
             cartEntity.setPhone(phone);
             int index = cart.getCartEntityList().indexOf(cartEntity);
-            cart.getCartEntityList().get(index).setQuantity(updateCartModel.getQuantity().get(i));
+            cart.getCartEntityList().get(index).setQuantity(updateCartModel.getUpdatePhonesQuantities().get(i));
         }
         recalculateTotals();
     }

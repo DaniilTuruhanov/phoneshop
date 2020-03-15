@@ -10,9 +10,9 @@ public class FromUpdateCartFormToModelPopulator implements Populator<UpdateCartF
 
     @Override
     public void populate(UpdateCartForm updateCartForm, UpdateCartModel updateCartModel) {
-        for (int i = 0; i < updateCartForm.getPhonesId().size(); i++) {
-            updateCartModel.getPhonesId().add(Long.valueOf(updateCartForm.getPhonesId().get(i).trim()));
-            updateCartModel.getQuantity().add(Integer.valueOf(updateCartForm.getQuantity().get(i)));
+        for (int i = 0; i < updateCartForm.getUpdatePhonesIds().size(); i++) {
+            updateCartModel.getUpdatePhonesIds().add(Long.valueOf(updateCartForm.getUpdatePhonesIds().get(i).trim()));
+            updateCartModel.getUpdatePhonesQuantities().add(Integer.valueOf(updateCartForm.getUpdatePhonesQuantities().get(i)));
         }
     }
 }

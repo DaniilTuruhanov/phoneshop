@@ -1,27 +1,25 @@
 package com.es.core.form;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 public class UpdateCartForm {
-    private List<String> phonesId;
+    private List<String> updatePhonesIds;
 
-    private List<String> quantity;
+    private List<String> updatePhonesQuantities;
 
-    public List<String> getPhonesId() {
-        return phonesId;
+    public List<String> getUpdatePhonesIds() {
+        return updatePhonesIds;
     }
 
-    public void setPhonesId(List<String> phonesId) {
-        this.phonesId = phonesId;
+    public void setUpdatePhonesIds(List<String> updatePhonesIds) {
+        this.updatePhonesIds = updatePhonesIds;
     }
 
-    public List<String> getQuantity() {
-        return quantity;
+    public List<String> getUpdatePhonesQuantities() {
+        return updatePhonesQuantities;
     }
 
-    public void setQuantity(List<String> quantity) {
-        this.quantity = quantity;
+    public void setUpdatePhonesQuantities(List<String> updatePhonesQuantities) {
+        this.updatePhonesQuantities = updatePhonesQuantities;
     }
 }
