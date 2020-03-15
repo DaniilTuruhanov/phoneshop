@@ -1,9 +1,9 @@
 package com.es.core.service.impl;
 
+import com.es.core.dao.PhoneDao;
 import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.FindAndSortModel;
 import com.es.core.model.Phone;
-import com.es.core.dao.PhoneDao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class PhoneService {
 
     public Phone get(final Long key) throws PhoneNotFoundException {
         Optional<Phone> phone = phoneDao.get(key);
-        return phone.orElseThrow(PhoneNotFoundException::new);
+        return phone.orElseThrow(() -> new PhoneNotFoundException(key.toString()));
     }
 
     public void save(final Phone phone) {
@@ -42,6 +42,4 @@ public class PhoneService {
         int countPage = phoneDao.countPage(findAndSortModel);
         return countPage;
     }
-
-
 }

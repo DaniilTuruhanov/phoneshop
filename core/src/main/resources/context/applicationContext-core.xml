@@ -46,6 +46,29 @@
         </property>
     </bean>
 
+    <bean id="cartToCartDataConverter" class="com.es.core.converter.FromCartToCartDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromCartToCartDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromUpdateCartFormToModelConverter" class="com.es.core.converter.FromUpdateCartFormToModelConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromUpdateCartFormToModelPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromPhoneToDataConverter" class="com.es.core.converter.FromPhoneToDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromPhoneToDataPopulator"/>
+            </list>
+        </property>
+    </bean>
     <jdbc:initialize-database enabled="${db.insertSchema}" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
     </jdbc:initialize-database>

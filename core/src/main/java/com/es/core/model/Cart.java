@@ -39,9 +39,8 @@ public class Cart {
         return cartEntityList;
     }
 
-    public void setPhoneStocks(List<CartEntity> phoneStocks) {
-        this.cartEntityList = phoneStocks;
+    public void setCartEntityList(List<CartEntity> cartEntityList) {
+        this.cartEntityList = cartEntityList;
     }
-
 }
 

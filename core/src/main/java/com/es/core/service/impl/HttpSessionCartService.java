@@ -1,18 +1,18 @@
 package com.es.core.service.impl;
 
-import com.es.core.model.AddToCartModel;
-import com.es.core.model.CartEntity;
 import com.es.core.exception.PhoneNotFoundException;
+import com.es.core.model.AddToCartModel;
 import com.es.core.model.Cart;
+import com.es.core.model.CartEntity;
 import com.es.core.model.Phone;
-import org.springframework.stereotype.Service;
+import com.es.core.model.UpdateCartModel;
 import com.es.core.service.CartService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class HttpSessionCartService implements CartService {
@@ -46,19 +46,42 @@ public class HttpSessionCartService implements CartService {
             cartEntityList.get(index).setQuantity(stockReserved);
         } else {
             cartEntityList.add(cartEntity);
-            cart.setPhoneStocks(cartEntityList);
+            cart.setCartEntityList(cartEntityList);
         }
         recalculateTotals();
     }
 
     @Override
-    public void update(Map<Long, Long> items) {
-        throw new UnsupportedOperationException("TODO");
+    public void update(UpdateCartModel updateCartModel) {
+        Cart cart = getCart();
+        Phone phone = new Phone();
+        for (int i = 0; i < updateCartModel.getQuantity().size(); i++) {
+            CartEntity cartEntity = new CartEntity();
+            phone.setId(updateCartModel.getPhonesId().get(i));
+            cartEntity.setPhone(phone);
+            int index = cart.getCartEntityList().indexOf(cartEntity);
+            cart.getCartEntityList().get(index).setQuantity(updateCartModel.getQuantity().get(i));
+        }
+        recalculateTotals();
     }
 
     @Override
-    public void remove(Long phoneId) {
-        throw new UnsupportedOperationException("TODO");
+    public void remove(Long phoneId) throws PhoneNotFoundException {
+        Cart cart = getCart();
+        Phone phone = phoneService.get(phoneId);
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setPhone(phone);
+        List<CartEntity> cartEntityList = cart.getCartEntityList();
+        if (cartEntityList.contains(cartEntity)) {
+            cartEntityList.remove(cartEntity);
+            cart.setCartEntityList(cartEntityList);
+        }
+        recalculateTotals();
+    }
+
+    @Override
+    public void cleanCart() {
+        session.setAttribute("cart", new Cart());
     }
 
     @Override

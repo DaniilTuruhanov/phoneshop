@@ -95,7 +95,7 @@
                     <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
                 </th>
                 <th>${phone.brand}</th>
-                <th>${phone.model}</th>
+                <th><a href="products/${phone.id}">${phone.model}</a></th>
 
                 <th><c:forEach var="color" items="${phone.colors}">
                     <div> ${color.code}</div>
