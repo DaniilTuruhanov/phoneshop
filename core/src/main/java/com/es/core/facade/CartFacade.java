@@ -8,7 +8,7 @@ import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.form.AddToCartForm;
 import com.es.core.form.UpdateCartForm;
 import com.es.core.model.AddToCartModel;
-import com.es.core.model.Cart;
+import com.es.core.model.CartModel;
 import com.es.core.model.UpdateCartModel;
 import com.es.core.service.CartService;
 import org.springframework.stereotype.Component;
@@ -39,13 +39,13 @@ public class CartFacade {
         cartService.remove(phoneId);
     }
 
-    public void updateCart(UpdateCartForm updateCartForm){
+    public void updateCart(UpdateCartForm updateCartForm) {
         UpdateCartModel updateCartModel = fromUpdateCartFormToModelConverter.convert(updateCartForm);
         cartService.update(updateCartModel);
     }
 
-    public CartData getCartData(){
-        Cart cart = cartService.getCart();
+    public CartData getCartData() {
+        CartModel cart = cartService.getCart();
         CartData cartData = fromCartToCartDataConverter.convert(cart);
         return cartData;
     }

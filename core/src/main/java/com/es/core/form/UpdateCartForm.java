@@ -4,11 +4,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class UpdateCartForm {
-     private List<String> phonesId;
+    private List<String> phonesId;
 
-     private List<String> quantity;
+    private List<String> quantity;
 
     public List<String> getPhonesId() {
         return phonesId;

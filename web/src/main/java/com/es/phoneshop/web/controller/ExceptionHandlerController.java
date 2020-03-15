@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(PhoneNotFoundException.class)
-    public String phoneNotFoundException(PhoneNotFoundException e, Model model){
+    public String phoneNotFoundException(PhoneNotFoundException e, Model model) {
         model.addAttribute("id", e.getId());
         return "phoneNotFound";
     }

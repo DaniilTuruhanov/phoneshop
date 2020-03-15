@@ -2,7 +2,6 @@ package com.es.core.form;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class AddToCartForm {
     private String quantity;
 

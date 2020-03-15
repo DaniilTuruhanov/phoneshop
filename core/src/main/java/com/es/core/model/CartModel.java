@@ -6,14 +6,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
+public class CartModel {
     private BigDecimal totalCost;
 
     private Integer totalQuantity;
 
     private List<CartEntity> cartEntityList;
 
-    public Cart() {
+    public CartModel() {
         totalCost = BigDecimal.valueOf(0);
         cartEntityList = new ArrayList<>();
         totalQuantity = 0;

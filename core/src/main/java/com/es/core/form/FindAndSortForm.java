@@ -2,7 +2,6 @@ package com.es.core.form;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class FindAndSortForm {
     private String query = "";
 

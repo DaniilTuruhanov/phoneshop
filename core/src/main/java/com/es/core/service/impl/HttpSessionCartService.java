@@ -2,7 +2,7 @@ package com.es.core.service.impl;
 
 import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.AddToCartModel;
-import com.es.core.model.Cart;
+import com.es.core.model.CartModel;
 import com.es.core.model.CartEntity;
 import com.es.core.model.Phone;
 import com.es.core.model.UpdateCartModel;
@@ -24,14 +24,14 @@ public class HttpSessionCartService implements CartService {
     private HttpSession session;
 
     @Override
-    public Cart getCart() {
-        Cart cart = (Cart) session.getAttribute("cart");
+    public CartModel getCart() {
+        CartModel cart = (CartModel) session.getAttribute("cart");
         return cart;
     }
 
     @Override
     public void addPhone(AddToCartModel addToCartModel) throws PhoneNotFoundException {
-        Cart cart = getCart();
+        CartModel cart = getCart();
         Long phoneId = addToCartModel.getPhoneId();
         int quantity = addToCartModel.getQuantity();
         Phone phone = phoneService.get(phoneId);
@@ -53,9 +53,9 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void update(UpdateCartModel updateCartModel) {
-        Cart cart = getCart();
+        CartModel cart = getCart();
         Phone phone = new Phone();
-        for (int i = 0; i < updateCartModel.getQuantity().size(); i++) {
+        for (int i = 0; i < updateCartModel.getPhonesId().size(); i++) {
             CartEntity cartEntity = new CartEntity();
             phone.setId(updateCartModel.getPhonesId().get(i));
             cartEntity.setPhone(phone);
@@ -67,7 +67,7 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void remove(Long phoneId) throws PhoneNotFoundException {
-        Cart cart = getCart();
+        CartModel cart = getCart();
         Phone phone = phoneService.get(phoneId);
         CartEntity cartEntity = new CartEntity();
         cartEntity.setPhone(phone);
@@ -81,12 +81,12 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void cleanCart() {
-        session.setAttribute("cart", new Cart());
+        session.setAttribute("cart", new CartModel());
     }
 
     @Override
     public void recalculateTotals() {
-        Cart cart = getCart();
+        CartModel cart = getCart();
         cart.setTotalCost(BigDecimal.valueOf(0));
         cart.setTotalQuantity(0);
         for (CartEntity stock : cart.getCartEntityList()) {

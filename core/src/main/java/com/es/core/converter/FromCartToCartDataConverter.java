@@ -1,18 +1,18 @@
 package com.es.core.converter;
 
 import com.es.core.data.CartData;
-import com.es.core.model.Cart;
+import com.es.core.model.CartModel;
 import com.es.core.populator.Populator;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
 
-public class FromCartToCartDataConverter implements Converter<Cart, CartData> {
+public class FromCartToCartDataConverter implements Converter<CartModel, CartData> {
 
     private List<Populator> populators;
 
     @Override
-    public CartData convert(Cart cart) {
+    public CartData convert(CartModel cart) {
         CartData cartData = new CartData();
         for (Populator populator : populators) {
             populator.populate(cart, cartData);

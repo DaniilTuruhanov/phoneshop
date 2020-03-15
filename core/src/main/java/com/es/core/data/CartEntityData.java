@@ -15,7 +15,7 @@ public class CartEntityData {
 
     private String model;
 
-    private Set<Color> colors= new HashSet<>();
+    private Set<Color> colors = new HashSet<>();
 
     private BigDecimal price;
 

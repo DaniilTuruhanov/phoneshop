@@ -42,8 +42,7 @@ public class UpdateCartValidator implements Validator {
                 cartEntity = cartEntityList.get(index);
                 if (intQuantity <= 0) {
                     errors.reject(stringPhoneId, "Use number more then 0");
-                }
-                else {
+                } else {
                     if (intQuantity > cartEntity.getPhone().getStock()) {
                         errors.reject(stringPhoneId, "Available stock: " + cartEntity.getPhone().getStock());
                     }
