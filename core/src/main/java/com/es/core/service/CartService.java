@@ -1,16 +1,16 @@
 package com.es.core.service;
 
 import com.es.core.exception.PhoneNotFoundException;
-import com.es.core.model.AddToCartModel;
 import com.es.core.model.CartModel;
-import com.es.core.model.UpdateCartModel;
+
+import java.util.List;
 
 public interface CartService {
     CartModel getCart();
 
-    void addPhone(AddToCartModel addToCartModel) throws PhoneNotFoundException;
+    void addPhone(Long id, Integer quantity) throws PhoneNotFoundException;
 
-    void update(UpdateCartModel updateCartModel);
+    void update(List<String> id, List<String> quantity);
 
     void recalculateTotals();
 

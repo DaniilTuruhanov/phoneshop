@@ -1,15 +1,15 @@
 package com.es.core.populator.impl;
 
-import com.es.core.data.PhoneData;
+import com.es.core.data.PhoneDetailsData;
 import com.es.core.model.Phone;
 import com.es.core.populator.Populator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FromPhoneToDataPopulator implements Populator<Phone, PhoneData> {
+public class FromPhoneToDataPopulator implements Populator<Phone, PhoneDetailsData> {
 
     @Override
-    public void populate(Phone phone, PhoneData phoneData) {
+    public void populate(Phone phone, PhoneDetailsData phoneData) {
         phoneData.setId(phone.getId());
         phoneData.setModel(phone.getModel());
         phoneData.setPrice(phone.getPrice());

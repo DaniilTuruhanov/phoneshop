@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CartData {
 
-    private List<CartEntityData> cartEntityList = new ArrayList<>();
+    private List<PhoneData> cartEntityList = new ArrayList<>();
 
     private int totalQuantity;
 
@@ -20,11 +20,11 @@ public class CartData {
         this.totalCost = totalCost;
     }
 
-    public List<CartEntityData> getCartEntityList() {
+    public List<PhoneData> getCartEntityList() {
         return cartEntityList;
     }
 
-    public void setCartEntityList(List<CartEntityData> cartEntityList) {
+    public void setCartEntityList(List<PhoneData> cartEntityList) {
         this.cartEntityList = cartEntityList;
     }
 

@@ -1,7 +1,7 @@
 package com.es.core.populator.impl;
 
 import com.es.core.data.CartData;
-import com.es.core.data.CartEntityData;
+import com.es.core.data.PhoneData;
 import com.es.core.model.CartModel;
 import com.es.core.model.CartEntity;
 import com.es.core.populator.Populator;
@@ -13,15 +13,15 @@ public class FromCartToCartDataPopulator implements Populator<CartModel, CartDat
     @Override
     public void populate(CartModel cart, CartData cartData) {
         for (CartEntity cartEntity : cart.getCartEntityList()) {
-            CartEntityData cartEntityData = new CartEntityData();
-            cartEntityData.setBrand(cartEntity.getPhone().getBrand());
-            cartEntityData.setModel(cartEntity.getPhone().getModel());
-            cartEntityData.setDisplaySizeInches(cartEntity.getPhone().getDisplaySizeInches());
-            cartEntityData.setColors(cartEntity.getPhone().getColors());
-            cartEntityData.setPrice(cartEntity.getPhone().getPrice());
-            cartEntityData.setId(cartEntity.getPhone().getId());
-            cartEntityData.setQuantity(cartEntity.getQuantity());
-            cartData.getCartEntityList().add(cartEntityData);
+            PhoneData phoneData = new PhoneData();
+            phoneData.setBrand(cartEntity.getPhone().getBrand());
+            phoneData.setModel(cartEntity.getPhone().getModel());
+            phoneData.setDisplaySizeInches(cartEntity.getPhone().getDisplaySizeInches());
+            phoneData.setColors(cartEntity.getPhone().getColors());
+            phoneData.setPrice(cartEntity.getPhone().getPrice());
+            phoneData.setId(cartEntity.getPhone().getId());
+            phoneData.setQuantity(cartEntity.getQuantity());
+            cartData.getCartEntityList().add(phoneData);
         }
         cartData.setTotalQuantity(cart.getTotalQuantity());
         cartData.setTotalCost(cart.getTotalCost());

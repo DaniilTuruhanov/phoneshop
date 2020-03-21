@@ -1,11 +1,9 @@
 package com.es.core.service.impl;
 
 import com.es.core.exception.PhoneNotFoundException;
-import com.es.core.model.AddToCartModel;
 import com.es.core.model.CartModel;
 import com.es.core.model.CartEntity;
 import com.es.core.model.Phone;
-import com.es.core.model.UpdateCartModel;
 import com.es.core.service.CartService;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +28,8 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void addPhone(AddToCartModel addToCartModel) throws PhoneNotFoundException {
+    public void addPhone(Long phoneId, Integer quantity) throws PhoneNotFoundException {
         CartModel cart = getCart();
-        Long phoneId = addToCartModel.getPhoneId();
-        int quantity = addToCartModel.getQuantity();
         Phone phone = phoneService.get(phoneId);
         CartEntity cartEntity = new CartEntity();
         cartEntity.setPhone(phone);
@@ -52,15 +48,15 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void update(UpdateCartModel updateCartModel) {
+    public void update(List<String> id, List<String> quantity) {
         CartModel cart = getCart();
         Phone phone = new Phone();
-        for (int i = 0; i < updateCartModel.getUpdatePhonesQuantities().size(); i++) {
+        for (int i = 0; i < id.size(); i++) {
             CartEntity cartEntity = new CartEntity();
-            phone.setId(updateCartModel.getUpdatePhonesIds().get(i));
+            phone.setId(Long.valueOf(id.get(i)));
             cartEntity.setPhone(phone);
             int index = cart.getCartEntityList().indexOf(cartEntity);
-            cart.getCartEntityList().get(index).setQuantity(updateCartModel.getUpdatePhonesQuantities().get(i));
+            cart.getCartEntityList().get(index).setQuantity(Integer.valueOf(quantity.get(i)));
         }
         recalculateTotals();
     }
