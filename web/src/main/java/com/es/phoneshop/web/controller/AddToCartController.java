@@ -4,7 +4,6 @@ import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.facade.CartFacade;
 import com.es.core.form.AddToCartForm;
 import com.es.core.validator.AddToCartValidator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,14 +27,14 @@ public class AddToCartController {
     private AddToCartValidator addToCartValidator;
 
     @PostMapping
-    public ResponseEntity addPhone(@ModelAttribute AddToCartForm addToCartForm, BindingResult result) throws PhoneNotFoundException, JsonProcessingException {
+    public ResponseEntity addPhone(@ModelAttribute AddToCartForm addToCartForm, BindingResult result) throws PhoneNotFoundException {
         addToCartValidator.validate(addToCartForm, result);
         if (result.hasErrors()) {
             String errorString = result.getAllErrors().get(0).getCode();
             return new ResponseEntity<>(errorString, new HttpHeaders(), HttpStatus.BAD_REQUEST);
         } else {
             cartFacade.addToCart(addToCartForm);
-            String message = cartFacade.getTotalCost().toString();
+            String message = cartFacade.getCartData().getTotalCost().toString();
             return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
         }
     }

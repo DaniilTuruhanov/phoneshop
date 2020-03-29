@@ -22,14 +22,6 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="fromAddToCartFormToModelConverter" class="com.es.core.converter.FromAddToCartFormToModelConverter">
-        <property name="populators">
-            <list>
-                <ref bean="fromAddToCartFormToModelPopulator"/>
-            </list>
-        </property>
-    </bean>
-
     <bean id="fromPhoneListToDataConverter" class="com.es.core.converter.FromPhoneListToDataConverter">
         <property name="populators">
             <list>
@@ -46,6 +38,21 @@
         </property>
     </bean>
 
+    <bean id="cartToCartDataConverter" class="com.es.core.converter.FromCartToCartDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromCartToCartDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromPhoneToDataConverter" class="com.es.core.converter.FromPhoneToDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromPhoneToDataPopulator"/>
+            </list>
+        </property>
+    </bean>
     <jdbc:initialize-database enabled="${db.insertSchema}" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
     </jdbc:initialize-database>

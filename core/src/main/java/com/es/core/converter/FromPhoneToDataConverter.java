@@ -1,23 +1,24 @@
 package com.es.core.converter;
 
-import com.es.core.form.AddToCartForm;
-import com.es.core.model.AddToCartModel;
+import com.es.core.data.PhoneData;
+import com.es.core.data.PhoneDetailsData;
+import com.es.core.model.Phone;
 import com.es.core.populator.Populator;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
 
-public class FromAddToCartFormToModelConverter implements Converter<AddToCartForm, AddToCartModel> {
+public class FromPhoneToDataConverter implements Converter<Phone, PhoneData> {
 
     private List<Populator> populators;
 
     @Override
-    public AddToCartModel convert(AddToCartForm addToCartForm) {
-        AddToCartModel addToCartModel = new AddToCartModel();
+    public PhoneDetailsData convert(Phone phone) {
+        PhoneDetailsData phoneDetailsData = new PhoneDetailsData();
         for (Populator populator : populators) {
-            populator.populate(addToCartForm, addToCartModel);
+            populator.populate(phone, phoneDetailsData);
         }
-        return addToCartModel;
+        return phoneDetailsData;
     }
 
     public List<Populator> getPopulators() {

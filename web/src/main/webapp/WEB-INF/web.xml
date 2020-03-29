@@ -25,4 +25,24 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    <filter>
+        <filter-name>httpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpMethodFilter</filter-name>
+        <servlet-name>dispatcher</servlet-name>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>getMethodConvertingFilter</filter-name>
+        <filter-class>com.es.core.filter.GetMethodConvertingFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>getMethodConvertingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
 </web-app>
