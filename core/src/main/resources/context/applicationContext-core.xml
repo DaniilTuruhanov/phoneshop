@@ -53,6 +53,31 @@
             </list>
         </property>
     </bean>
+
+    <bean id="fromOrderToOrderDataConverter" class="com.es.core.converter.FromOrderToOrderDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromOrderToOrderDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromUserFormToModelConverter" class="com.es.core.converter.FromUserFormToModelConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromUserFormToModelPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromOrderToOrderOverviewDataConverter"
+          class="com.es.core.converter.FromOrderToOrderOverviewDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromOrderToOrderOverviewDataPopulator"/>
+            </list>
+        </property>
+    </bean>
     <jdbc:initialize-database enabled="${db.insertSchema}" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
     </jdbc:initialize-database>
