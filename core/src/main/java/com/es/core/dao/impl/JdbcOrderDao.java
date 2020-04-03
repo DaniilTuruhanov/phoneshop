@@ -4,6 +4,7 @@ import com.es.core.dao.OrderDao;
 import com.es.core.dao.extractor.OrderExtractor;
 import com.es.core.model.CartEntity;
 import com.es.core.model.OrderModel;
+import com.es.core.model.Status;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +51,7 @@ public class JdbcOrderDao implements OrderDao {
 
     @Override
     public void saveOrder(OrderModel order) {
-        jdbcTemplate.update(INSERT_ORDER_QUERY, order.getUserModel().getFirstName(), order.getUserModel().getLastName(), order.getUserModel().getAddress(), order.getId(), order.getUserModel().getDate(), order.getUserModel().getPhone(), order.getUserModel().getDescription(), order.getDeliveryCost(), order.getStatus());
+        jdbcTemplate.update(INSERT_ORDER_QUERY, order.getUserModel().getFirstName(), order.getUserModel().getLastName(), order.getUserModel().getAddress(), order.getId(), order.getUserModel().getDate(), order.getUserModel().getPhone(), order.getUserModel().getDescription(), order.getDeliveryCost(), order.getStatus().name());
         for (CartEntity cartEntity : order.getCartEntityList()) {
             jdbcTemplate.update(INSERT_INTO_ORDER2PHONE_QUERY, cartEntity.getPhone().getId(), order.getId(), cartEntity.getQuantity());
             jdbcTemplate.update(UPDATE_STOCKS_QUERY, cartEntity.getPhone().getStock() - cartEntity.getQuantity(), cartEntity.getPhone().getId());
@@ -70,8 +71,8 @@ public class JdbcOrderDao implements OrderDao {
     }
 
     @Override
-    public void changeStatus(String status, Integer number) {
-        jdbcTemplate.update(UPDATE_STATUS_QUERY, status, number);
+    public void changeStatus(Status status, Integer number) {
+        jdbcTemplate.update(UPDATE_STATUS_QUERY, status.name(), number);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.es.core.dao.OrderDao;
 import com.es.core.exception.OrderNotFoundException;
 import com.es.core.model.CartModel;
 import com.es.core.model.OrderModel;
+import com.es.core.model.Status;
 import com.es.core.service.CartService;
 import com.es.core.service.OrderService;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +51,7 @@ public class HttpSessionOrderService implements OrderService {
         order.setCartEntityList(cart.getCartEntityList());
         order.setSubtotalCost(cart.getTotalCost());
         order.setDeliveryCost(price);
-        order.setStatus("NEW");
+        order.setStatus(Status.NEW);
         order.setTotalCost(order.getDeliveryCost().add(order.getSubtotalCost()));
         return order;
     }
@@ -61,7 +62,7 @@ public class HttpSessionOrderService implements OrderService {
     }
 
     @Override
-    public void changeStatus(String status, Integer number) {
+    public void changeStatus(Status status, Integer number) {
         orderDao.changeStatus(status, number);
     }
 

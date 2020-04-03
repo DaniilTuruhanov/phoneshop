@@ -1,6 +1,7 @@
 package com.es.core.dao;
 
 import com.es.core.model.OrderModel;
+import com.es.core.model.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +16,5 @@ public interface OrderDao {
 
     List<OrderModel> getOrderList();
 
-    void changeStatus(String status, Integer number);
+    void changeStatus(Status status, Integer number);
 }

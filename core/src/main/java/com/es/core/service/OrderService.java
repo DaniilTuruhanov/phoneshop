@@ -2,6 +2,7 @@ package com.es.core.service;
 
 import com.es.core.exception.OrderNotFoundException;
 import com.es.core.model.OrderModel;
+import com.es.core.model.Status;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface OrderService {
 
     List<OrderModel> getOrderList();
 
-    void changeStatus(String status, Integer number);
+    void changeStatus(Status status, Integer number);
 }

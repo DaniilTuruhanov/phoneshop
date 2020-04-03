@@ -4,6 +4,7 @@ import com.es.core.model.CartEntity;
 import com.es.core.model.Color;
 import com.es.core.model.OrderModel;
 import com.es.core.model.Phone;
+import com.es.core.model.Status;
 import com.es.core.model.UserModel;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -91,7 +92,7 @@ public class OrderExtractor implements ResultSetExtractor<List<OrderModel>> {
         order.getUserModel().setDate(resultSet.getDate("data"));
         order.setId(resultSet.getString("orderId"));
         order.setNumber(resultSet.getInt("number"));
-        order.setStatus(resultSet.getString("status"));
+        order.setStatus(Status.valueOf(resultSet.getString("status")));
         order.setDeliveryCost(resultSet.getBigDecimal("delivery"));
         order.setSubtotalCost(new BigDecimal("0"));
         addCartEntityToOrder(order.getCartEntityList(), resultSet);
