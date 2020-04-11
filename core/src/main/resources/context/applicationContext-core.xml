@@ -70,6 +70,22 @@
         </property>
     </bean>
 
+    <bean id="fromOrderToAdminOrderDataConverter" class="com.es.core.converter.FromOrderToAdminOrderDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromOrderToAdminOrderDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fromOrderToAdminDataConverter" class="com.es.core.converter.FromOrderToAdminDataConverter">
+        <property name="populators">
+            <list>
+                <ref bean="fromOrderToAdminDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="fromOrderToOrderOverviewDataConverter"
           class="com.es.core.converter.FromOrderToOrderOverviewDataConverter">
         <property name="populators">
