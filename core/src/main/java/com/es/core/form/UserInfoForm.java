@@ -1,15 +1,15 @@
 package com.es.core.form;
 
 public class UserInfoForm {
-    private String firstName = "";
+    private String firstName;
 
-    private String lastName = "";
+    private String lastName;
 
-    private String phone = "";
+    private String phone;
 
-    private String address = "";
+    private String address;
 
-    private String description = "";
+    private String description;
 
     public String getFirstName() {
         return firstName;

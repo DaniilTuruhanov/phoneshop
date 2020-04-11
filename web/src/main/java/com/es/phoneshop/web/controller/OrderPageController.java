@@ -33,7 +33,7 @@ public class OrderPageController {
     private UserInfoValidator userInfoValidator;
 
     @GetMapping
-    private String showOrder(Model model) {
+    private String getOrderPage(Model model) {
         OrderData orderData = orderFacade.getOrder();
         model.addAttribute("order", orderData);
         return "order";
