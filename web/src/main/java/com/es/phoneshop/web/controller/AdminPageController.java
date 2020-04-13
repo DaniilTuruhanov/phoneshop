@@ -1,7 +1,7 @@
 package com.es.phoneshop.web.controller;
 
 import com.es.core.data.AdminData;
-import com.es.core.data.AdminOrderData;
+import com.es.core.data.AdminDetailsData;
 import com.es.core.exception.OrderNotFoundException;
 import com.es.core.facade.AdminFacade;
 import com.es.core.model.Status;
@@ -32,14 +32,14 @@ public class AdminPageController {
 
     @GetMapping(value = "/{orderNumber}")
     public String getOrder(@PathVariable Integer orderNumber, Model model) throws OrderNotFoundException {
-        AdminOrderData adminOrderData = adminFacade.getAdminOrderData(orderNumber);
+        AdminDetailsData adminOrderData = adminFacade.getAdminOrderData(orderNumber);
         model.addAttribute("order", adminOrderData);
         return "orderAdmin";
     }
 
     @PostMapping(value = "/{orderNumber}")
     public String changeStatus(@RequestParam String status, Model model, @PathVariable Integer orderNumber) throws OrderNotFoundException {
-        AdminOrderData adminOrderData = adminFacade.changeStatus(Status.valueOf(status), orderNumber);
+        AdminDetailsData adminOrderData = adminFacade.changeStatus(Status.valueOf(status), orderNumber);
         model.addAttribute("order", adminOrderData);
         return "orderAdmin";
     }

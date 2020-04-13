@@ -1,9 +1,9 @@
 package com.es.core.facade;
 
 import com.es.core.converter.FromOrderToAdminDataConverter;
-import com.es.core.converter.FromOrderToAdminOrderDataConverter;
+import com.es.core.converter.FromOrderToAdminDetailsDataConverter;
 import com.es.core.data.AdminData;
-import com.es.core.data.AdminOrderData;
+import com.es.core.data.AdminDetailsData;
 import com.es.core.exception.OrderNotFoundException;
 import com.es.core.model.OrderModel;
 import com.es.core.model.Status;
@@ -21,7 +21,7 @@ public class AdminFacade {
     private OrderService orderService;
 
     @Resource
-    private FromOrderToAdminOrderDataConverter fromOrderToAdminOrderDataConverter;
+    private FromOrderToAdminDetailsDataConverter fromOrderToAdminOrderDataConverter;
 
     @Resource
     private FromOrderToAdminDataConverter fromOrderToAdminDataConverter;
@@ -35,12 +35,12 @@ public class AdminFacade {
         return adminEntityDataList;
     }
 
-    public AdminOrderData getAdminOrderData(Integer number) throws OrderNotFoundException {
+    public AdminDetailsData getAdminOrderData(Integer number) throws OrderNotFoundException {
         OrderModel order = orderService.getOrder(number);
         return fromOrderToAdminOrderDataConverter.convert(order);
     }
 
-    public AdminOrderData changeStatus(Status status, Integer number) throws OrderNotFoundException {
+    public AdminDetailsData changeStatus(Status status, Integer number) throws OrderNotFoundException {
         orderService.changeStatus(status, number);
         OrderModel order = orderService.getOrder(number);
         return fromOrderToAdminOrderDataConverter.convert(order);

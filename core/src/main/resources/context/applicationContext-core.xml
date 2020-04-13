@@ -70,10 +70,10 @@
         </property>
     </bean>
 
-    <bean id="fromOrderToAdminOrderDataConverter" class="com.es.core.converter.FromOrderToAdminOrderDataConverter">
+    <bean id="fromOrderToAdminOrderDataConverter" class="com.es.core.converter.FromOrderToAdminDetailsDataConverter">
         <property name="populators">
             <list>
-                <ref bean="fromOrderToAdminOrderDataPopulator"/>
+                <ref bean="fromOrderToAdminDetailsDataPopulator"/>
             </list>
         </property>
     </bean>
