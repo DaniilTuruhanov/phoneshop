@@ -20,8 +20,8 @@ public class RegistrationUserService implements UserService {
 
     @Override
     public void save(String username, String password) {
-        password = bCryptPasswordEncoder.encode(password);
-        userDao.save(username, password);
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        userDao.save(username, encodePassword);
     }
 
     @Override
