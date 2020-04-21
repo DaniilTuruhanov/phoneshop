@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
@@ -8,11 +9,42 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <head>
 </head>
-<h4>
+<div style="display: flex;justify-content:space-between ">
+    <div>
+        <h4>
     <span class="badge badge-light">
     Welcome to Expert-Soft!
     </span>
-</h4>
+        </h4>
+    </div>
+    <div style="display:flex">
+        <sec:authorize access="isAuthenticated()">
+            <div style="margin-right: 2%">
+                <b><sec:authentication property="principal.username"/></b>
+            </div>
+        </sec:authorize>
+        <div style="margin-right: 2%">
+            <form action="${pageContext.servletContext.contextPath}/logout" method="get" id="logoutForm">
+                <input class="btn btn-primary mb-2" type="submit" value="Logout"/>
+            </form>
+        </div>
+        <div style="margin-right: 2%">
+            <form action="${pageContext.servletContext.contextPath}/admin" method="get">
+                <input class="btn btn-primary mb-2" type="submit" value="Admin"/>
+            </form>
+        </div>
+        <div style="margin-right: 2%">
+            <form action="${pageContext.servletContext.contextPath}/login" method="get">
+                <input class="btn btn-primary mb-2" type="submit" value="Login"/>
+            </form>
+        </div>
+        <div style="margin-right: 2%">
+            <form action="${pageContext.servletContext.contextPath}/registration" method="get" >
+                <input class="btn btn-primary mb-2" type="submit" value="Registration"/>
+            </form>
+        </div>
+    </div>
+</div>
 <form name="cartButton" action="${pageContext.servletContext.contextPath}/cart">
     <button class="btn btn-primary mb-2">Cart ${sessionScope.cart.totalCost} $</button>
 </form>
@@ -109,10 +141,20 @@
                     </div>
                     <div name="error${phone.id}" class="error"></div>
                 </th>
-                <td>
-                    <input class="btn btn-primary mb-2" type="submit" id="ajaxButton${phone.id}"
-                           onclick="addAjax(${phone.id})" value="Add to">
-                </td>
+                <sec:authorize access="!isAuthenticated()">
+                    <td>
+                        <form action="${pageContext.servletContext.contextPath}/login">
+                            <input class="btn btn-primary mb-2" type="submit" id="loginButton"
+                                   value="Add to"/>
+                        </form>
+                    </td>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <td>
+                        <input class="btn btn-primary mb-2" type="submit" id="ajaxButton${phone.id}"
+                               onclick="addAjax(${phone.id})" value="Add to"/>
+                    </td>
+                </sec:authorize>
             </tr>
 
         </c:forEach>

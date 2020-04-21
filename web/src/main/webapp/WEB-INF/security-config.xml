@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+    <http use-expressions="true">
+        <intercept-url pattern="/login" access="isAnonymous()"/>
+        <intercept-url pattern="/registration" access="isAnonymous()"/>
+        <intercept-url pattern="/products" access="permitAll()"/>
+        <intercept-url pattern="/" access="permitAll()"/>
+        <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+        <form-login login-page="/login"
+                    username-parameter="username"
+                    password-parameter="password"
+                    default-target-url="/products"
+                    authentication-failure-url="/login?error=true"/>
+        <logout logout-url="/logout" logout-success-url="/products"/>
+        <access-denied-handler error-page="/products"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder ref="encoder"/>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="select username, password, enabled from users where username=?"
+                               authorities-by-username-query="select u.username, role from users u
+            inner join user2role u2r on u.username=u2r.username
+            inner join roles r on r.id=u2r.roleId where u.username =? "/>
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+</beans:beans>
