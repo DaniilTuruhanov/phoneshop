@@ -292,7 +292,7 @@ public class Phone {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Phone phone = (Phone) o;
-        return Objects.equals(id, phone.id);
+        return (Objects.equals(id, phone.id) || Objects.equals(model, phone.model));
     }
 
     @Override

@@ -26,6 +26,11 @@ public class JdbcPhoneDao implements PhoneDao {
             "left outer join phone2color p2с on p.id=p2с.phoneId " +
             "left outer join colors c on p2с.colorId=c.id";
 
+    private static final String GET_PHONE_BY_MODEL_QUERY = "select * from (select * from phones " +
+            "inner join stocks s on id=s.phoneId where model=?) p " +
+            "left outer join phone2color p2с on p.id=p2с.phoneId " +
+            "left outer join colors c on p2с.colorId=c.id";
+
     private static final String UPDATE_PHONES_QUERY = "update phones set brand=?,model=?,price=?,displaySizeInches=?,weightGr=?,lengthMm=?,widthMm=?,heightMm=?,announced=?,deviceType=?,os=?,displayResolution=?,pixelDensity=?,displayTechnology=?,backCameraMegapixels=?,frontCameraMegapixels=?,ramGb=?,internalStorageGb=?,batteryCapacityMah=?,talkTimeHours=?,standByTimeHours=?,bluetooth=?,positioning=?,imageUrl=?,description=? where id=?";
 
     private static final String DELETE_FROM_PHONE2COLOR_QUERY = "delete from phone2color where phoneId = ? and colorId = ?";
@@ -57,6 +62,12 @@ public class JdbcPhoneDao implements PhoneDao {
     @Override
     public Optional<Phone> get(final Long key) {
         List<Phone> phoneList = jdbcTemplate.query(GET_PHONE_QUERY, new PhoneExtractor(), key);
+        return phoneList.stream().findAny();
+    }
+
+    @Override
+    public Optional<Phone> get(final String key) {
+        List<Phone> phoneList = jdbcTemplate.query(GET_PHONE_BY_MODEL_QUERY, new PhoneExtractor(), key);
         return phoneList.stream().findAny();
     }
 
@@ -114,7 +125,6 @@ public class JdbcPhoneDao implements PhoneDao {
         List<String> queryList = queryParams(query);
         String findInBrand = likeIn("brand", queryList);
         String findInDescription = likeIn("description", queryList);
-        ;
         String findAndSort = " and " + findInBrand + " or " + findInDescription;
         if (order.length() > 0) {
             findAndSort += " order by " + order + " " + sort + " , id ";

@@ -48,6 +48,28 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
+    public void addPhone(List<String> phoneModel, List<Integer> phoneQuantity) throws PhoneNotFoundException {
+        CartModel cart = getCart();
+        for (int i =0;i<phoneModel.size();i++) {
+            Phone phone = phoneService.get(phoneModel.get(i));
+            CartEntity cartEntity = new CartEntity();
+            cartEntity.setPhone(phone);
+            cartEntity.setQuantity(phoneQuantity.get(i));
+            List<CartEntity> cartEntityList = cart.getCartEntityList();
+            if (cartEntityList.contains(cartEntity)) {
+                int index = cartEntityList.indexOf(cartEntity);
+                CartEntity cartEntityInList = cartEntityList.get(index);
+                int stockReserved = cartEntityInList.getQuantity() + phoneQuantity.get(i);
+                cartEntityList.get(index).setQuantity(stockReserved);
+            } else {
+                cartEntityList.add(cartEntity);
+                cart.setCartEntityList(cartEntityList);
+            }
+        }
+        recalculateTotals();
+    }
+
+    @Override
     public void update(List<String> id, List<String> quantity) {
         CartModel cart = getCart();
         Phone phone = new Phone();

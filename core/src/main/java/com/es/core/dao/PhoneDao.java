@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface PhoneDao {
     Optional<Phone> get(Long key);
 
+    Optional<Phone> get(String key);
+
     void save(Phone phone);
 
     List<Phone> findAll(FindAndSortModel findAndSortModel);
