@@ -1,25 +1,21 @@
 package com.es.core.form;
 
+import com.es.core.model.QuickOrderEntity;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.List;
 
 public class QuickOrderForm {
-    private List<String> phoneModel;
 
-    private List<String> phoneQuantity;
+    @Valid
+    List<QuickOrderEntity> quickOrderEntityList;
 
-    public List<String> getPhoneModel() {
-        return phoneModel;
+    public List<QuickOrderEntity> getQuickOrderEntityList() {
+        return quickOrderEntityList;
     }
 
-    public void setPhoneModel(List<String> phoneModel) {
-        this.phoneModel = phoneModel;
-    }
-
-    public List<String> getPhoneQuantity() {
-        return phoneQuantity;
-    }
-
-    public void setPhoneQuantity(List<String> phoneQuantity) {
-        this.phoneQuantity = phoneQuantity;
+    public void setQuickOrderEntityList(List<QuickOrderEntity> quickOrderEntityList) {
+        this.quickOrderEntityList = quickOrderEntityList;
     }
 }

@@ -7,6 +7,7 @@ import com.es.core.form.AddToCartForm;
 import com.es.core.form.QuickOrderForm;
 import com.es.core.form.UpdateCartForm;
 import com.es.core.model.CartModel;
+import com.es.core.model.QuickOrderEntity;
 import com.es.core.service.CartService;
 import org.springframework.stereotype.Component;
 
@@ -27,17 +28,10 @@ public class CartFacade {
         cartService.addPhone(Long.valueOf(addToCartForm.getPhoneId()), Integer.valueOf(addToCartForm.getQuantity()));
     }
 
-    public int addToCart(QuickOrderForm quickOrderForm) throws PhoneNotFoundException {
-        List<Integer> quantity = new ArrayList<>();
-        List<String> model = new ArrayList<>();
-        for (int i = 0; i < quickOrderForm.getPhoneQuantity().size(); i++) {
-            if (!quickOrderForm.getPhoneQuantity().get(i).equals("")) {
-                model.add(quickOrderForm.getPhoneModel().get(i));
-                quantity.add(Integer.valueOf(quickOrderForm.getPhoneQuantity().get(i)));
-            }
-        }
+    public void addToCart(QuickOrderEntity quickOrderEntity) throws PhoneNotFoundException {
+        String model = quickOrderEntity.getModel();
+        Integer quantity = Integer.valueOf(quickOrderEntity.getQuantity());
         cartService.addPhone(model, quantity);
-        return model.size();
     }
 
     public void deleteFromCart(Long phoneId) throws PhoneNotFoundException {

@@ -5,15 +5,18 @@ import com.es.core.form.AddToCartForm;
 import com.es.core.form.QuickOrderForm;
 import com.es.core.model.CartEntity;
 import com.es.core.model.Phone;
+import com.es.core.model.QuickOrderEntity;
 import com.es.core.service.CartService;
 import com.es.core.service.impl.PhoneService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class QuickOrderAddToCartValidator implements Validator {
@@ -29,69 +32,68 @@ public class QuickOrderAddToCartValidator implements Validator {
         return AddToCartForm.class.equals(aClass);
     }
 
-    private static List<String> deleteFromQuickOrder= new ArrayList<>();
-
     @Override
     public void validate(Object validateObject, Errors errors) {
-        int intQuantity;
         CartEntity cartEntity = new CartEntity();
         Phone phone = new Phone();
         QuickOrderForm quickOrderForm = (QuickOrderForm) validateObject;
-        for (int i = 0; i < quickOrderForm.getPhoneModel().size(); i++) {
-            if (!quickOrderForm.getPhoneModel().get(i).equals("") || !quickOrderForm.getPhoneQuantity().get(i).equals("")) {
-                String quantity = quickOrderForm.getPhoneQuantity().get(i);
-                String phoneModel = quickOrderForm.getPhoneModel().get(i);
-                phone.setModel(phoneModel);
+        List<QuickOrderEntity> quickOrderEntityList = quickOrderForm.getQuickOrderEntityList();
+        for (int i = 0; quickOrderEntityList.size() > 0 && i < quickOrderEntityList.size(); i++) {
+            String model = quickOrderEntityList.get(i).getModel();
+            String quantity = quickOrderEntityList.get(i).getQuantity();
+            if (!findInErrors(errors, i)) {
+                int intQuantity = Integer.parseInt(quantity);
+                phone.setModel(model);
                 cartEntity.setPhone(phone);
                 List<CartEntity> cartEntityList = cartService.getCart().getCartEntityList();
-                try {
-                    intQuantity = Integer.valueOf(quantity);
-                } catch (NumberFormatException e) {
-                    errors.reject(phoneModel, "Not a number");
-                    deleteFromQuickOrder.add(phoneModel);
-                    break;
-                }
-
-                if (intQuantity <= 0) {
-                    errors.reject(phoneModel, "Use number more then 0");
-                    deleteFromQuickOrder.add(phoneModel);
-                    break;
-                }
                 if (cartEntityList.contains(cartEntity)) {
-                    existInCart(cartEntityList, cartEntity, errors, intQuantity, phoneModel);
+                    i = existInCart(cartEntityList, cartEntity, errors, intQuantity, quickOrderForm, i);
                 } else {
-                    dontExistInCart(phoneModel, errors, intQuantity);
+                    i = absentInCart(model, errors, intQuantity, i, quickOrderForm);
                 }
-            }
-        }
-        for (int i = 0; i < deleteFromQuickOrder.size(); i++) {
-            if (quickOrderForm.getPhoneModel().contains(deleteFromQuickOrder.get(i))) {
-                int index = quickOrderForm.getPhoneModel().indexOf(deleteFromQuickOrder.get(i));
-                quickOrderForm.getPhoneQuantity().remove(index);
-                quickOrderForm.getPhoneModel().remove(index);
+            } else {
+                deleteFromQuickOrderForm(i, quickOrderForm);
+                i--;
             }
         }
     }
 
-    private void existInCart(List<CartEntity> cartEntityList, CartEntity cartEntity, Errors errors, Integer intQuantity, String phoneModel) {
+    private boolean findInErrors(Errors errors, Integer i) {
+        return errors.getAllErrors().stream().anyMatch(error -> Objects.requireNonNull(error.getCodes())[0].contains("quickOrderEntityList[" + i + "].model")
+                || Objects.requireNonNull(error.getCodes())[0].contains("quickOrderEntityList[" + i + "].quantity"));
+    }
+
+    private void deleteFromQuickOrderForm(Integer i, QuickOrderForm quickOrderForm) {
+        List<QuickOrderEntity> quickOrderEntityList = quickOrderForm.getQuickOrderEntityList();
+        quickOrderEntityList.remove(quickOrderEntityList.get(i));
+        quickOrderForm.setQuickOrderEntityList(quickOrderEntityList);
+    }
+
+    private int existInCart(List<CartEntity> cartEntityList, CartEntity cartEntity, Errors errors, Integer
+            intQuantity, QuickOrderForm quickOrderForm, Integer i) {
         int index = cartEntityList.indexOf(cartEntity);
         cartEntity = cartEntityList.get(index);
         if (cartEntity.getQuantity() + intQuantity > cartEntity.getPhone().getStock()) {
-            errors.reject(phoneModel, "Not enough stock");
-            deleteFromQuickOrder.add(phoneModel);
+            errors.rejectValue("quickOrderEntityList[" + i + "].quantity", "", "not enough stock");
+            deleteFromQuickOrderForm(i, quickOrderForm);
+            i--;
         }
+        return i;
     }
 
-    private void dontExistInCart(String phoneModel, Errors errors, Integer intQuantity) {
+    private int absentInCart(String phoneModel, Errors errors, Integer intQuantity, Integer i, QuickOrderForm quickOrderForm) {
         try {
             Phone phone = phoneService.get(phoneModel);
             if (intQuantity > phone.getStock()) {
-                errors.reject(phoneModel, "Available stock: " + phone.getStock());
-                deleteFromQuickOrder.add(phoneModel);
+                errors.rejectValue("quickOrderEntityList[" + i + "].quantity", "", "Available stock: " + phone.getStock());
+                deleteFromQuickOrderForm(i, quickOrderForm);
+                i--;
             }
         } catch (PhoneNotFoundException e) {
-            errors.reject(phoneModel, "Phone not found");
-            deleteFromQuickOrder.add(phoneModel);
+            errors.rejectValue("quickOrderEntityList[" + i + "].model", "", "Phone not found");
+            deleteFromQuickOrderForm(i, quickOrderForm);
+            i--;
         }
+        return i;
     }
 }

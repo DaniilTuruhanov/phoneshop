@@ -29,42 +29,28 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addPhone(Long phoneId, Integer quantity) throws PhoneNotFoundException {
+        addPhoneToCart(quantity, phoneService.get(phoneId));
+    }
+
+    @Override
+    public void addPhone(String phoneModel, Integer phoneQuantity) throws PhoneNotFoundException {
+        addPhoneToCart(phoneQuantity, phoneService.get(phoneModel));
+    }
+
+    private void addPhoneToCart(Integer phoneQuantity, Phone phone) throws PhoneNotFoundException {
         CartModel cart = getCart();
-        Phone phone = phoneService.get(phoneId);
         CartEntity cartEntity = new CartEntity();
         cartEntity.setPhone(phone);
-        cartEntity.setQuantity(quantity);
+        cartEntity.setQuantity(phoneQuantity);
         List<CartEntity> cartEntityList = cart.getCartEntityList();
         if (cartEntityList.contains(cartEntity)) {
             int index = cartEntityList.indexOf(cartEntity);
             CartEntity cartEntityInList = cartEntityList.get(index);
-            int stockReserved = cartEntityInList.getQuantity() + quantity;
+            int stockReserved = cartEntityInList.getQuantity() + phoneQuantity;
             cartEntityList.get(index).setQuantity(stockReserved);
         } else {
             cartEntityList.add(cartEntity);
             cart.setCartEntityList(cartEntityList);
-        }
-        recalculateTotals();
-    }
-
-    @Override
-    public void addPhone(List<String> phoneModel, List<Integer> phoneQuantity) throws PhoneNotFoundException {
-        CartModel cart = getCart();
-        for (int i =0;i<phoneModel.size();i++) {
-            Phone phone = phoneService.get(phoneModel.get(i));
-            CartEntity cartEntity = new CartEntity();
-            cartEntity.setPhone(phone);
-            cartEntity.setQuantity(phoneQuantity.get(i));
-            List<CartEntity> cartEntityList = cart.getCartEntityList();
-            if (cartEntityList.contains(cartEntity)) {
-                int index = cartEntityList.indexOf(cartEntity);
-                CartEntity cartEntityInList = cartEntityList.get(index);
-                int stockReserved = cartEntityInList.getQuantity() + phoneQuantity.get(i);
-                cartEntityList.get(index).setQuantity(stockReserved);
-            } else {
-                cartEntityList.add(cartEntity);
-                cart.setCartEntityList(cartEntityList);
-            }
         }
         recalculateTotals();
     }
