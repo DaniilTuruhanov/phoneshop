@@ -2,16 +2,20 @@ package com.es.core.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class QuickOrderEntity {
 
-    @NotEmpty(message = "not empty pls")
+    @NotEmpty(message = "not empty")
     private String model;
 
-    @Pattern(regexp = "[0-9]+", message = "not a number")
-    private String quantity;
+    @NotNull(message = "not empty")
+    @Min(value = 1, message = "use more than 0")
+    private Integer quantity;
 
     public String getModel() {
         return model;
@@ -21,11 +25,11 @@ public class QuickOrderEntity {
         this.model = model;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

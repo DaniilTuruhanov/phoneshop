@@ -40,16 +40,15 @@ public class QuickOrderAddToCartValidator implements Validator {
         List<QuickOrderEntity> quickOrderEntityList = quickOrderForm.getQuickOrderEntityList();
         for (int i = 0; quickOrderEntityList.size() > 0 && i < quickOrderEntityList.size(); i++) {
             String model = quickOrderEntityList.get(i).getModel();
-            String quantity = quickOrderEntityList.get(i).getQuantity();
+            Integer quantity = quickOrderEntityList.get(i).getQuantity();
             if (!findInErrors(errors, i)) {
-                int intQuantity = Integer.parseInt(quantity);
                 phone.setModel(model);
                 cartEntity.setPhone(phone);
                 List<CartEntity> cartEntityList = cartService.getCart().getCartEntityList();
                 if (cartEntityList.contains(cartEntity)) {
-                    i = existInCart(cartEntityList, cartEntity, errors, intQuantity, quickOrderForm, i);
+                    i = existInCart(cartEntityList, cartEntity, errors, quantity, quickOrderForm, i);
                 } else {
-                    i = absentInCart(model, errors, intQuantity, i, quickOrderForm);
+                    i = absentInCart(model, errors, quantity, i, quickOrderForm);
                 }
             } else {
                 deleteFromQuickOrderForm(i, quickOrderForm);

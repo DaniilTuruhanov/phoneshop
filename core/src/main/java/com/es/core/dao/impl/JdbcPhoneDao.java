@@ -57,7 +57,7 @@ public class JdbcPhoneDao implements PhoneDao {
 
     private static final String UPDATE_STOCKS_QUERY = "update stocks set stock=? where phoneId=?";
 
-    private static final String INSERT_INTO_STOCKS_QUERY = "insert into stocks set values (?,?)";
+    private static final String INSERT_INTO_STOCKS_QUERY = "insert into stocks values (?,?)";
 
     @Override
     public Optional<Phone> get(final Long key) {

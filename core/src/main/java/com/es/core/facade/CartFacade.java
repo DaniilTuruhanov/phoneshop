@@ -30,7 +30,7 @@ public class CartFacade {
 
     public void addToCart(QuickOrderEntity quickOrderEntity) throws PhoneNotFoundException {
         String model = quickOrderEntity.getModel();
-        Integer quantity = Integer.valueOf(quickOrderEntity.getQuantity());
+        Integer quantity = quickOrderEntity.getQuantity();
         cartService.addPhone(model, quantity);
     }
 
