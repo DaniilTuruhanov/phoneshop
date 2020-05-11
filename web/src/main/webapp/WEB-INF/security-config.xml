@@ -8,6 +8,7 @@
 	http://www.springframework.org/schema/security/spring-security.xsd">
     <http use-expressions="true">
         <intercept-url pattern="/login" access="isAnonymous()"/>
+        <intercept-url pattern="/quickOrder" access="isAnonymous()"/>
         <intercept-url pattern="/registration" access="isAnonymous()"/>
         <intercept-url pattern="/products" access="permitAll()"/>
         <intercept-url pattern="/" access="permitAll()"/>

@@ -10,6 +10,8 @@ public interface CartService {
 
     void addPhone(Long id, Integer quantity) throws PhoneNotFoundException;
 
+    void addPhone(String phoneModel, Integer phoneQuantity) throws PhoneNotFoundException;
+
     void update(List<String> id, List<String> quantity);
 
     void recalculateTotals();

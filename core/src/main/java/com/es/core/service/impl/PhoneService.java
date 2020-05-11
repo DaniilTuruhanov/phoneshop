@@ -27,6 +27,11 @@ public class PhoneService {
         return phone.orElseThrow(() -> new PhoneNotFoundException(key.toString()));
     }
 
+    public Phone get(final String key) throws PhoneNotFoundException {
+        Optional<Phone> phone = phoneDao.get(key);
+        return phone.orElseThrow(() -> new PhoneNotFoundException(key.toString()));
+    }
+
     public void save(final Phone phone) {
         phoneDao.save(phone);
     }
